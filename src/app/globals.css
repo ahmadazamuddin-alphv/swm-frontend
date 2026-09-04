@@ -1,21 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  /* Soft Selangor palette */
-  --selangor-red: #c45c5c;
-  --selangor-red-deep: #a84848;
-  --selangor-red-soft: #f3d6d6;
-  --selangor-yellow: #e8c547;
-  --selangor-yellow-soft: #f7ebc4;
-  --selangor-cream: #fff8f2;
-  --selangor-ink: #4a2c2c;
+  --color-obsidian: #09090b;
+  --color-graphite: #18181b;
+  --color-slate: #27272a;
+  --color-iron: #3f3f46;
+  --color-steel: #52525b;
+  --color-fog: #71717a;
+  --color-ash: #a1a1aa;
+  --color-mist: #d4d4d8;
+  --color-cloud: #ececee;
+  --color-paper: #f4f4f5;
+  --color-snow: #ffffff;
+  --color-ember: #ff5a00;
 
-  --background: var(--selangor-cream);
-  --foreground: var(--selangor-ink);
-  --primary: var(--selangor-red);
-  --primary-foreground: #fffaf7;
-  --accent: var(--selangor-yellow);
-  --muted: #f0e4dc;
+  --background: var(--color-paper);
+  --foreground: var(--color-graphite);
+  --primary: var(--color-obsidian);
+  --primary-foreground: var(--color-snow);
+  --accent: var(--color-ember);
+  --muted: var(--color-cloud);
+
+  --text-caption: 12px;
+  --text-body: 15px;
+  --text-body-lg: 18px;
+  --text-subheading: 20px;
+  --text-heading-sm: 32px;
+  --text-heading: 40px;
+  --text-heading-lg: 56px;
+  --text-display: 64px;
+
+  --radius-card: 36px;
+  --radius-control: 14px;
+  --radius-badge: 12px;
+  --radius-pill: 10000px;
 }
 
 @theme inline {
@@ -25,149 +43,197 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
-  --color-selangor-red: var(--selangor-red);
-  --color-selangor-red-deep: var(--selangor-red-deep);
-  --color-selangor-red-soft: var(--selangor-red-soft);
-  --color-selangor-yellow: var(--selangor-yellow);
-  --color-selangor-yellow-soft: var(--selangor-yellow-soft);
-  --color-selangor-cream: var(--selangor-cream);
-  --color-selangor-ink: var(--selangor-ink);
+  --color-obsidian: #09090b;
+  --color-graphite: #18181b;
+  --color-slate: #27272a;
+  --color-iron: #3f3f46;
+  --color-steel: #52525b;
+  --color-fog: #71717a;
+  --color-ash: #a1a1aa;
+  --color-mist: #d4d4d8;
+  --color-cloud: #ececee;
+  --color-paper: #f4f4f5;
+  --color-snow: #ffffff;
+  --color-ember: #ff5a00;
   --font-sans: var(--font-dm-sans);
-  --font-display: var(--font-fraunces);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--color-paper);
 }
 
 body {
-  background:
-    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(232, 197, 71, 0.22), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 90% 10%, rgba(196, 92, 92, 0.16), transparent 50%),
-    var(--background);
-  color: var(--foreground);
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  min-height: 100dvh;
+  background: var(--color-paper);
+  color: var(--color-graphite);
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.45;
 }
 
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes hero-drift {
-  from {
-    opacity: 0;
-    transform: translateX(24px) scale(1.02);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+button,
+a {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes cta-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(196, 92, 92, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(196, 92, 92, 0);
-  }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 3px;
 }
 
-.hero-rise {
-  animation: hero-rise 0.9s ease-out both;
+::selection {
+  background: var(--color-ember);
+  color: var(--color-snow);
 }
 
-.hero-drift {
-  animation: hero-drift 1.2s ease-out 0.15s both;
+* {
+  scrollbar-color: var(--color-mist) transparent;
+  scrollbar-width: thin;
 }
 
-.cta-pulse {
-  animation: cta-pulse 2.8s ease-out 1.2s 2;
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-rise,
-  .hero-drift,
-  .cta-pulse {
-    animation: none;
-  }
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--color-mist);
+  background-clip: padding-box;
 }
 
-/* MapLibre attribution polish inside branded shell */
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid var(--color-cloud);
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top-color: var(--color-cloud);
+}
+
 .maplibregl-ctrl-attrib {
+  border-radius: 12px 0 0 0;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: var(--color-fog);
   font-size: 10px;
-  background: rgba(255, 248, 242, 0.85) !important;
 }
 
 .swm-map-pin {
   position: relative;
-  width: 18px;
-  height: 18px;
+  width: 28px;
+  height: 28px;
 }
 
 .swm-map-pin__dot {
   position: absolute;
-  inset: 3px;
-  border-radius: 999px;
-  background: #c45c5c;
-  border: 2px solid #fff8f2;
-  box-shadow: 0 2px 8px rgba(74, 44, 44, 0.35);
+  inset: 7px;
   z-index: 1;
+  border: 3px solid var(--color-snow);
+  border-radius: var(--radius-pill);
+  background: var(--color-ember);
+  box-shadow: 0 4px 12px rgba(9, 9, 11, 0.18);
 }
 
 .swm-map-pin__pulse {
   position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: rgba(196, 92, 92, 0.35);
-  animation: swm-pin-pulse 1.6s ease-out infinite;
+  inset: 2px;
+  border: 1px solid var(--color-ember);
+  border-radius: var(--radius-pill);
+  animation: swm-pin-pulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
 @keyframes swm-pin-pulse {
-  0% {
-    transform: scale(0.7);
-    opacity: 0.8;
+  from {
+    opacity: 0.85;
+    transform: scale(0.5);
   }
-  100% {
-    transform: scale(2.2);
+  to {
     opacity: 0;
+    transform: scale(1.55);
   }
 }
 
 .swm-map-popup .maplibregl-popup-content {
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(255, 248, 242, 0.96);
-  color: #4a2c2c;
+  min-width: 210px;
+  padding: 16px;
+  border: 1px solid var(--color-cloud);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 12px 28px rgba(9, 9, 11, 0.1);
+  color: var(--color-graphite);
   font-size: 12px;
-  line-height: 1.35;
-  box-shadow: 0 8px 24px rgba(74, 44, 44, 0.15);
+  line-height: 1.45;
 }
 
-.swm-map-popup .maplibregl-popup-content strong {
-  display: block;
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 13px;
-  margin-bottom: 2px;
+.swm-map-popup__title {
+  margin: 0 0 4px;
+  color: var(--color-obsidian);
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.swm-map-popup .maplibregl-popup-content code {
+.swm-map-popup__meta {
+  margin: 0;
+  color: var(--color-fog);
+}
+
+.swm-map-popup__coords {
   display: block;
-  margin-top: 4px;
-  font-size: 11px;
-  color: rgba(74, 44, 44, 0.65);
+  margin-top: 8px;
+  color: var(--color-steel);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
 }
 
 .swm-map-popup .maplibregl-popup-tip {
-  border-top-color: rgba(255, 248, 242, 0.96);
+  border-top-color: var(--color-snow);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .swm-map-pin__pulse {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

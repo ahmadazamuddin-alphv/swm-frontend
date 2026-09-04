@@ -1,3 +1,4 @@
+import { BuildingsIcon } from "@/components/ui/Icons";
 import type { ResponsibleParty } from "@/lib/types";
 
 export function PartyPanel({
@@ -9,62 +10,85 @@ export function PartyPanel({
 }) {
   if (!party) {
     return (
-      <div className="rounded-lg border border-dashed border-selangor-red/20 bg-white/40 p-5 text-sm text-selangor-ink/60">
-        Select a report or area to see the responsible department, contractor,
-        and contacts.
+      <div className="rounded-[36px] border border-dashed border-mist bg-snow p-6 text-sm leading-relaxed text-fog">
+        Location is needed before the responsible department can be suggested.
       </div>
     );
   }
 
   return (
-    <div
-      className={`rounded-lg border p-5 transition ${
-        highlight
-          ? "border-selangor-yellow bg-selangor-yellow-soft/50"
-          : "border-selangor-red/10 bg-white/55"
+    <section
+      className={`rounded-[36px] border bg-snow p-6 ${
+        highlight ? "border-mist" : "border-cloud"
       }`}
+      aria-labelledby={`party-${party.id}`}
     >
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-selangor-red/80">
-        Responsible party
-      </p>
-      <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-lg leading-snug text-selangor-ink">
-        {party.department}
-      </h3>
-      <dl className="mt-4 space-y-2 text-sm">
-        <div className="flex justify-between gap-4">
-          <dt className="text-selangor-ink/55">Contractor</dt>
-          <dd className="text-right text-selangor-ink">{party.contractor}</dd>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-medium text-fog">Responsible party</p>
+          <h2
+            id={`party-${party.id}`}
+            className="mt-2 text-lg font-semibold leading-snug text-obsidian"
+          >
+            {party.department}
+          </h2>
         </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-selangor-ink/55">Contact</dt>
-          <dd className="text-right text-selangor-ink">{party.contactPerson}</dd>
+        <span className="grid size-10 shrink-0 place-items-center rounded-[14px] bg-obsidian text-snow">
+          <BuildingsIcon className="size-5" />
+        </span>
+      </div>
+
+      {highlight && (
+        <span className="mt-4 inline-flex rounded-xl bg-ember px-2.5 py-1 text-[11px] font-medium text-snow">
+          Suggested for this location
+        </span>
+      )}
+
+      <dl className="mt-5 divide-y divide-cloud text-sm">
+        <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
+          <dt className="text-fog">Contractor</dt>
+          <dd className="text-right text-graphite">{party.contractor}</dd>
         </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-selangor-ink/55">Phone</dt>
-          <dd className="text-right text-selangor-ink">
-            <a href={`tel:${party.phone}`} className="hover:text-selangor-red">
+        <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
+          <dt className="text-fog">Contact</dt>
+          <dd className="text-right text-graphite">{party.contactPerson}</dd>
+        </div>
+        <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
+          <dt className="text-fog">Phone</dt>
+          <dd className="text-right">
+            <a
+              href={`tel:${party.phone}`}
+              className="text-graphite underline decoration-mist underline-offset-4 hover:text-ember"
+            >
               {party.phone}
             </a>
           </dd>
         </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-selangor-ink/55">Email</dt>
-          <dd className="text-right text-selangor-ink">
+        <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
+          <dt className="text-fog">Email</dt>
+          <dd className="min-w-0 text-right">
             <a
               href={`mailto:${party.email}`}
-              className="hover:text-selangor-red"
+              className="break-all text-graphite underline decoration-mist underline-offset-4 hover:text-ember"
             >
               {party.email}
             </a>
           </dd>
         </div>
-        <div>
-          <dt className="text-selangor-ink/55">Zone coverage</dt>
-          <dd className="mt-1 text-selangor-ink">
-            {party.zoneCoverage.join(" · ")}
+        <div className="py-2.5">
+          <dt className="text-fog">Zone coverage</dt>
+          <dd className="mt-2 flex flex-wrap gap-1.5">
+            {party.zoneCoverage.map((zone) => (
+              <span
+                key={zone}
+                className="rounded-xl border border-cloud px-2 py-1 text-xs text-graphite"
+              >
+                {zone}
+              </span>
+            ))}
           </dd>
         </div>
       </dl>
-    </div>
+    </section>
   );
 }

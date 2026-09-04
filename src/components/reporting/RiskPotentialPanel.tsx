@@ -8,9 +8,9 @@ import {
 import type { WasteCategory } from "@/lib/types";
 
 const LEVEL_STYLES = {
-  high: "bg-selangor-red-soft text-selangor-red-deep",
-  medium: "bg-selangor-yellow-soft text-selangor-ink",
-  low: "bg-emerald-50 text-emerald-900",
+  high: "bg-ember text-snow",
+  medium: "bg-graphite text-snow",
+  low: "border border-mist bg-snow text-graphite",
 } as const;
 
 export function RiskPotentialPanel({
@@ -26,51 +26,44 @@ export function RiskPotentialPanel({
   const peak = highestRiskLevel(risks);
 
   return (
-    <div className="rounded-lg border border-selangor-red/15 bg-white/60 p-5">
-      <div className="flex items-start justify-between gap-3">
+    <section className="rounded-[36px] border border-cloud bg-snow p-6">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-selangor-red/80">
-            Risk potential
-          </p>
-          <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-lg text-selangor-ink">
+          <p className="text-xs font-medium text-fog">Risk potential</p>
+          <h2 className="mt-2 text-lg font-semibold text-obsidian">
             What this waste can cause
-          </h3>
+          </h2>
         </div>
         <span
-          className={`shrink-0 rounded px-2 py-0.5 text-xs font-medium ${LEVEL_STYLES[peak]}`}
+          className={`shrink-0 rounded-xl px-2 py-1 text-[10px] font-medium ${LEVEL_STYLES[peak]}`}
         >
           {riskLevelLabel(peak)} overall
         </span>
       </div>
 
       {loading ? (
-        <p className="mt-4 text-sm text-selangor-ink/55">
-          Estimating risks from AI category…
+        <p className="mt-5 text-sm text-fog">
+          Estimating risks from the suggested category…
         </p>
       ) : (
-        <ul className="mt-4 space-y-3">
+        <ul className="mt-5 divide-y divide-cloud">
           {risks.map((risk) => (
-            <li
-              key={risk.id}
-              className="border-t border-selangor-red/10 pt-3 first:border-t-0 first:pt-0"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-medium text-selangor-ink">
-                  {risk.title}
-                </p>
+            <li key={risk.id} className="py-3 first:pt-0 last:pb-0">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-medium text-obsidian">{risk.title}</p>
                 <span
-                  className={`rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide ${LEVEL_STYLES[risk.level]}`}
+                  className={`rounded-xl px-2 py-0.5 text-[10px] font-medium ${LEVEL_STYLES[risk.level]}`}
                 >
                   {riskLevelLabel(risk.level)}
                 </span>
               </div>
-              <p className="mt-1 text-xs leading-relaxed text-selangor-ink/65">
+              <p className="mt-1.5 text-xs leading-relaxed text-fog">
                 {risk.summary}
               </p>
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 }

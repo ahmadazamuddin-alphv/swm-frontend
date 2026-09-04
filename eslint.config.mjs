@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    ".impeccable/edge-*/**",
+    "public/maplibre-gl-*.mjs",
     "next-env.d.ts",
   ]),
 ]);

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRightIcon } from "@/components/ui/Icons";
 import { WASTE_CATEGORY_LABELS, getPartyById } from "@/lib/mock-data";
 import { formatCoords } from "@/lib/geo";
 import type { Report } from "@/lib/types";
@@ -19,65 +20,71 @@ export function ReportList({
 }) {
   if (reports.length === 0) {
     return (
-      <p className="py-8 text-sm text-selangor-ink/60">
+      <p className="px-2 py-8 text-sm text-fog">
         No reports match these filters.
       </p>
     );
   }
 
   return (
-    <ul className="divide-y divide-selangor-red/10">
+    <ul className="divide-y divide-cloud">
       {reports.map((report) => {
         const party = getPartyById(report.responsiblePartyId);
         const active = selectedId === report.id;
+
         return (
-          <li key={report.id}>
+          <li key={report.id} className="relative py-1">
             <button
               type="button"
               onClick={() => onSelect?.(report.id)}
-              className={`flex w-full gap-3 text-left transition ${
-                compact ? "px-1 py-2.5" : "px-1 py-4"
-              } ${active ? "bg-selangor-yellow-soft/50" : "hover:bg-white/70"}`}
+              className={`flex w-full gap-3 rounded-[18px] pr-12 text-left ${
+                compact ? "px-2 py-2.5" : "px-2 py-4"
+              } ${
+                active
+                  ? "bg-paper"
+                  : "hover:bg-paper/80"
+              }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={report.imageUrl}
                 alt=""
-                className={`shrink-0 rounded object-cover ${
+                className={`shrink-0 rounded-[14px] object-cover ${
                   compact ? "h-12 w-14" : "h-16 w-20"
                 }`}
               />
-              <div className="min-w-0 flex-1 space-y-0.5">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="truncate font-[family-name:var(--font-fraunces)] text-sm text-selangor-ink">
+              <span className="min-w-0 flex-1">
+                <span className="flex items-start justify-between gap-2">
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-semibold text-obsidian">
                       {WASTE_CATEGORY_LABELS[report.wasteCategory]}
-                    </p>
-                    <p className="mt-0.5 truncate text-xs text-selangor-ink/65">
+                    </span>
+                    <span className="mt-0.5 block truncate text-xs text-fog">
                       {report.taman ? `${report.taman}, ` : ""}
                       {report.area}
-                    </p>
-                  </div>
+                    </span>
+                  </span>
                   <StatusBadge status={report.status} />
-                </div>
-                <p className="truncate font-mono text-[10px] text-selangor-ink/45">
+                </span>
+                <span className="tabular-nums mt-1 block truncate font-mono text-[10px] text-ash">
                   {formatCoords(report.latitude, report.longitude, 4)}
-                </p>
+                </span>
                 {!compact && (
-                  <p className="truncate text-xs text-selangor-ink/50">
+                  <span className="mt-1 block truncate text-xs text-fog">
                     {party?.department ?? "Unassigned"} · AI{" "}
                     {Math.round(report.aiConfidence * 100)}%
-                  </p>
+                  </span>
                 )}
-                <Link
-                  href={`/report/${report.id}`}
-                  className="inline-block text-xs font-medium text-selangor-red hover:underline"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Detail →
-                </Link>
-              </div>
+              </span>
             </button>
+
+            <Link
+              href={`/report/${report.id}`}
+              aria-label={`Open details for ${WASTE_CATEGORY_LABELS[report.wasteCategory]}`}
+              className="absolute bottom-3 right-2 grid size-8 place-items-center rounded-xl text-fog hover:bg-snow hover:text-ember"
+            >
+              <ArrowRightIcon className="size-3.5" />
+            </Link>
           </li>
         );
       })}
