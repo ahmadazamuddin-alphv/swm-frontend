@@ -1,0 +1,260 @@
+import type { Report, ResponsibleParty, WasteCategory } from "./types";
+
+export const WASTE_CATEGORY_LABELS: Record<WasteCategory, string> = {
+  construction: "Construction waste",
+  furniture: "Furniture",
+  waste_pile: "Waste piles",
+  tyres: "Tyres",
+  e_waste: "E-waste",
+  organic: "Organic / green waste",
+  mixed: "Mixed refuse",
+};
+
+export const STATUS_LABELS: Record<Report["status"], string> = {
+  new: "New",
+  under_review: "Under review",
+  assigned: "Assigned",
+  in_progress: "In progress",
+  solved: "Solved",
+  false_report: "False report",
+};
+
+/** Local demo photos under /public/mock/reports */
+const MOCK_IMAGES = {
+  construction1: "/mock/reports/construction-1.jpg",
+  construction2: "/mock/reports/construction-2.jpg",
+  construction3: "/mock/reports/construction-3.jpg",
+  furniture1: "/mock/reports/furniture-1.jpg",
+  furniture2: "/mock/reports/furniture-2.jpg",
+  wastePile: "/mock/reports/waste-pile-1.jpg",
+  eWaste: "/mock/reports/ewaste-1.jpg",
+  organic: "/mock/reports/organic-1.jpg",
+  mixed: "/mock/reports/mixed-1.jpg",
+  tyres: "/mock/reports/tyres-2.jpg",
+} as const;
+
+export const RESPONSIBLE_PARTIES: ResponsibleParty[] = [
+  {
+    id: "party-mbsa",
+    department: "Jabatan Kesihatan Awam MBSA",
+    contractor: "Alam Flora Environmental Services",
+    contactPerson: "Encik Hafiz Rahman",
+    phone: "+60 3-5510 8800",
+    email: "buang.haram@mbsa.gov.my",
+    zoneCoverage: ["Shah Alam", "Seksyen 7", "Seksyen 13"],
+    areaKey: "shah-alam",
+  },
+  {
+    id: "party-mbpj",
+    department: "Jabatan Pengurusan Sisa Pepejal MBPJ",
+    contractor: "Environment Idaman Sdn Bhd",
+    contactPerson: "Puan Farah Lim",
+    phone: "+60 3-7956 3544",
+    email: "sisa@mbpj.gov.my",
+    zoneCoverage: ["Petaling Jaya", "SS2", "Damansara"],
+    areaKey: "petaling-jaya",
+  },
+  {
+    id: "party-mbk",
+    department: "Jabatan Perkhidmatan Bandar MBK",
+    contractor: "KDEB Waste Management",
+    contactPerson: "Encik Rizal Osman",
+    phone: "+60 3-3373 8888",
+    email: "aduan@mbklang.gov.my",
+    zoneCoverage: ["Klang", "Port Klang", "Bukit Tinggi"],
+    areaKey: "klang",
+  },
+  {
+    id: "party-mpsj",
+    department: "Bahagian Kawalan Pencemaran MPSJ",
+    contractor: "SWM Environment",
+    contactPerson: "Puan Nadia Chong",
+    phone: "+60 3-5637 9730",
+    email: "pencemaran@mpsj.gov.my",
+    zoneCoverage: ["Subang Jaya", "USJ", "Puchong"],
+    areaKey: "subang-jaya",
+  },
+];
+
+export const MOCK_REPORTS: Report[] = [
+  {
+    id: "rpt-1001",
+    latitude: 3.0733,
+    longitude: 101.5185,
+    wasteCategory: "construction",
+    wasteType: "Concrete rubble & timber offcuts",
+    aiConfidence: 0.91,
+    status: "solved",
+    imageUrl: MOCK_IMAGES.construction1,
+    submittedAt: "2026-08-12T09:20:00+08:00",
+    solvedAt: "2026-08-15T16:40:00+08:00",
+    responsiblePartyId: "party-mbsa",
+    area: "Shah Alam",
+    postcode: "40000",
+    taman: "Seksyen 7",
+    notes: "Pile cleared; contractor uploaded proof.",
+  },
+  {
+    id: "rpt-1002",
+    latitude: 3.1073,
+    longitude: 101.6067,
+    wasteCategory: "furniture",
+    wasteType: "Discarded sofas & mattresses",
+    aiConfidence: 0.87,
+    status: "in_progress",
+    imageUrl: MOCK_IMAGES.furniture1,
+    submittedAt: "2026-09-01T14:05:00+08:00",
+    responsiblePartyId: "party-mbpj",
+    area: "Petaling Jaya",
+    postcode: "47300",
+    taman: "SS2",
+  },
+  {
+    id: "rpt-1003",
+    latitude: 3.0449,
+    longitude: 101.4456,
+    wasteCategory: "waste_pile",
+    wasteType: "Mixed household pile beside drain",
+    aiConfidence: 0.78,
+    status: "assigned",
+    imageUrl: MOCK_IMAGES.wastePile,
+    submittedAt: "2026-09-02T11:30:00+08:00",
+    responsiblePartyId: "party-mbk",
+    area: "Klang",
+    postcode: "41200",
+    taman: "Taman Sri Andalas",
+  },
+  {
+    id: "rpt-1004",
+    latitude: 3.0488,
+    longitude: 101.5851,
+    wasteCategory: "e_waste",
+    wasteType: "CRT monitors & PC casings",
+    aiConfidence: 0.84,
+    status: "under_review",
+    imageUrl: MOCK_IMAGES.eWaste,
+    submittedAt: "2026-09-03T08:15:00+08:00",
+    responsiblePartyId: "party-mpsj",
+    area: "Subang Jaya",
+    postcode: "47500",
+    taman: "USJ 4",
+  },
+  {
+    id: "rpt-1005",
+    latitude: 3.0831,
+    longitude: 101.5322,
+    wasteCategory: "organic",
+    wasteType: "Garden cuttings & fallen trees",
+    aiConfidence: 0.73,
+    status: "solved",
+    imageUrl: MOCK_IMAGES.organic,
+    submittedAt: "2026-08-20T17:50:00+08:00",
+    solvedAt: "2026-08-22T10:10:00+08:00",
+    responsiblePartyId: "party-mbsa",
+    area: "Shah Alam",
+    postcode: "40100",
+    taman: "Seksyen 13",
+  },
+  {
+    id: "rpt-1006",
+    latitude: 3.1128,
+    longitude: 101.5934,
+    wasteCategory: "mixed",
+    wasteType: "Bags of mixed refuse at vacant lot",
+    aiConfidence: 0.69,
+    status: "new",
+    imageUrl: MOCK_IMAGES.mixed,
+    submittedAt: "2026-09-04T07:40:00+08:00",
+    responsiblePartyId: "party-mbpj",
+    area: "Petaling Jaya",
+    postcode: "47400",
+    taman: "Damansara Utama",
+  },
+  {
+    id: "rpt-1007",
+    latitude: 3.0312,
+    longitude: 101.6178,
+    wasteCategory: "construction",
+    wasteType: "Renovation debris on roadside",
+    aiConfidence: 0.88,
+    status: "solved",
+    imageUrl: MOCK_IMAGES.construction2,
+    submittedAt: "2026-08-28T12:00:00+08:00",
+    solvedAt: "2026-08-30T15:25:00+08:00",
+    responsiblePartyId: "party-mpsj",
+    area: "Subang Jaya",
+    postcode: "47620",
+    taman: "Puchong Perdana",
+  },
+  {
+    id: "rpt-1008",
+    latitude: 3.0015,
+    longitude: 101.4122,
+    wasteCategory: "tyres",
+    wasteType: "Discarded tyres & plastic drums",
+    aiConfidence: 0.81,
+    status: "in_progress",
+    imageUrl: MOCK_IMAGES.tyres,
+    submittedAt: "2026-09-03T19:20:00+08:00",
+    responsiblePartyId: "party-mbk",
+    area: "Klang",
+    postcode: "42000",
+    taman: "Port Klang",
+  },
+  {
+    id: "rpt-1009",
+    latitude: 3.0644,
+    longitude: 101.5011,
+    wasteCategory: "furniture",
+    wasteType: "Broken wardrobes behind surau",
+    aiConfidence: 0.76,
+    status: "solved",
+    imageUrl: MOCK_IMAGES.furniture2,
+    submittedAt: "2026-08-18T10:45:00+08:00",
+    solvedAt: "2026-08-19T14:00:00+08:00",
+    responsiblePartyId: "party-mbsa",
+    area: "Shah Alam",
+    postcode: "40150",
+    taman: "Seksyen 15",
+  },
+  {
+    id: "rpt-1010",
+    latitude: 3.0955,
+    longitude: 101.6288,
+    wasteCategory: "construction",
+    wasteType: "Brick & cement bags",
+    aiConfidence: 0.93,
+    status: "assigned",
+    imageUrl: MOCK_IMAGES.construction3,
+    submittedAt: "2026-09-04T13:10:00+08:00",
+    responsiblePartyId: "party-mbpj",
+    area: "Petaling Jaya",
+    postcode: "46000",
+    taman: "Seksyen 51",
+  },
+];
+
+export const SELANGOR_CENTER = {
+  longitude: 101.52,
+  latitude: 3.07,
+  zoom: 10.4,
+};
+
+export function getPartyById(id: string): ResponsibleParty | undefined {
+  return RESPONSIBLE_PARTIES.find((p) => p.id === id);
+}
+
+export function getReportById(id: string): Report | undefined {
+  return MOCK_REPORTS.find((r) => r.id === id);
+}
+
+export function suggestPartyForCoords(
+  latitude: number,
+  longitude: number,
+): ResponsibleParty {
+  // Rough Voronoi-style zones for POC
+  if (longitude < 101.48) return RESPONSIBLE_PARTIES[2]; // Klang
+  if (latitude > 3.09 && longitude > 101.55) return RESPONSIBLE_PARTIES[1]; // PJ
+  if (latitude < 3.05 && longitude > 101.55) return RESPONSIBLE_PARTIES[3]; // Subang
+  return RESPONSIBLE_PARTIES[0]; // Shah Alam default
+}

@@ -44,3 +44,130 @@ body {
   color: var(--foreground);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
 }
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    opacity: 0;
+    transform: translateX(24px) scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(196, 92, 92, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(196, 92, 92, 0);
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.9s ease-out both;
+}
+
+.hero-drift {
+  animation: hero-drift 1.2s ease-out 0.15s both;
+}
+
+.cta-pulse {
+  animation: cta-pulse 2.8s ease-out 1.2s 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-drift,
+  .cta-pulse {
+    animation: none;
+  }
+}
+
+/* MapLibre attribution polish inside branded shell */
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+  background: rgba(255, 248, 242, 0.85) !important;
+}
+
+.swm-map-pin {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.swm-map-pin__dot {
+  position: absolute;
+  inset: 3px;
+  border-radius: 999px;
+  background: #c45c5c;
+  border: 2px solid #fff8f2;
+  box-shadow: 0 2px 8px rgba(74, 44, 44, 0.35);
+  z-index: 1;
+}
+
+.swm-map-pin__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(196, 92, 92, 0.35);
+  animation: swm-pin-pulse 1.6s ease-out infinite;
+}
+
+@keyframes swm-pin-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.swm-map-popup .maplibregl-popup-content {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255, 248, 242, 0.96);
+  color: #4a2c2c;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 8px 24px rgba(74, 44, 44, 0.15);
+}
+
+.swm-map-popup .maplibregl-popup-content strong {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.swm-map-popup .maplibregl-popup-content code {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: rgba(74, 44, 44, 0.65);
+}
+
+.swm-map-popup .maplibregl-popup-tip {
+  border-top-color: rgba(255, 248, 242, 0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swm-map-pin__pulse {
+    animation: none;
+  }
+}
