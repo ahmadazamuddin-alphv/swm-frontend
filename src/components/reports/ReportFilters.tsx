@@ -43,11 +43,11 @@ export function ReportFilters({
   compact = false,
 }: ReportFiltersProps) {
   const labelClass = compact
-    ? "flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-selangor-ink/55"
-    : "flex min-w-[9rem] flex-1 flex-col gap-1 text-xs font-medium uppercase tracking-wider text-selangor-ink/55";
+    ? "flex min-w-[7.5rem] flex-1 flex-col gap-1 text-[11px] font-medium text-fog"
+    : "flex min-w-[9rem] flex-1 flex-col gap-1.5 text-xs font-medium text-fog";
   const selectClass = compact
-    ? "rounded-md border border-selangor-red/15 bg-white/80 px-2.5 py-1.5 text-xs font-normal normal-case tracking-normal text-selangor-ink outline-none focus:border-selangor-red/40"
-    : "rounded-md border border-selangor-red/15 bg-white/80 px-3 py-2 text-sm font-normal normal-case tracking-normal text-selangor-ink outline-none focus:border-selangor-red/40";
+    ? "h-9 rounded-[14px] border border-cloud bg-snow px-3 text-xs font-normal text-graphite outline-none hover:border-mist"
+    : "h-11 rounded-[14px] border border-cloud bg-snow px-3 text-sm font-normal text-graphite outline-none hover:border-mist";
 
   return (
     <div className={`flex flex-wrap ${compact ? "gap-2" : "gap-3"}`}>

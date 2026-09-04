@@ -97,60 +97,11 @@ export function resolvePlaceLocal(
   return { city: best.city, state: best.state, source: "local" };
 }
 
-type NominatimAddress = {
-  city?: string;
-  town?: string;
-  village?: string;
-  municipality?: string;
-  suburb?: string;
-  county?: string;
-  state?: string;
-};
-
-/**
- * Reverse-geocode GPS to city + state.
- * Tries OpenStreetMap Nominatim, then nearest known MY city.
- */
+/** Deterministic local place lookup for the hardcoded citizen POC. */
 export async function reverseGeocode(
   latitude: number,
   longitude: number,
 ): Promise<PlaceInfo> {
-  try {
-    const url = new URL("https://nominatim.openstreetmap.org/reverse");
-    url.searchParams.set("format", "json");
-    url.searchParams.set("lat", String(latitude));
-    url.searchParams.set("lon", String(longitude));
-    url.searchParams.set("zoom", "12");
-    url.searchParams.set("addressdetails", "1");
-
-    const res = await fetch(url.toString(), {
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    if (res.ok) {
-      const data = (await res.json()) as { address?: NominatimAddress };
-      const addr = data.address ?? {};
-      const city =
-        addr.city ||
-        addr.town ||
-        addr.municipality ||
-        addr.village ||
-        addr.suburb ||
-        addr.county;
-      const state = addr.state;
-      if (city && state) {
-        return { city, state, source: "nominatim" };
-      }
-      if (state) {
-        const local = resolvePlaceLocal(latitude, longitude);
-        return { city: city || local.city, state, source: "nominatim" };
-      }
-    }
-  } catch {
-    // fall through
-  }
-
+  await new Promise((resolve) => window.setTimeout(resolve, 240));
   return resolvePlaceLocal(latitude, longitude);
 }

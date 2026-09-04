@@ -32,34 +32,11 @@ const HEURISTICS: Array<{
   },
 ];
 
-/**
- * Client-side POC classifier. When Laravel AI is wired, POST the frame to
- * `/waste/classify` and return the server suggestion instead.
- */
+/** Deterministic client-side classifier used only by the hardcoded POC. */
 export async function classifyWasteFromImage(
   imageDataUrl: string,
 ): Promise<WasteClassification> {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL;
-  if (base) {
-    try {
-      const res = await fetch(`${base}/waste/classify`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image: imageDataUrl }),
-      });
-      if (res.ok) {
-        return (await res.json()) as WasteClassification;
-      }
-    } catch {
-      // fall through to local heuristic
-    }
-  }
-
-  // Simulate network / model latency for demo UX
-  await new Promise((r) => setTimeout(r, 900));
+  await new Promise((resolve) => window.setTimeout(resolve, 900));
 
   const hash = imageDataUrl.length + imageDataUrl.charCodeAt(80 % imageDataUrl.length);
   const pick = HEURISTICS[hash % HEURISTICS.length];

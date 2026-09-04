@@ -1,164 +1,50 @@
-# Selangor Waste Management — Next.js Citizen Frontend
+# Selangor Waste Management — Citizen POC
 
-Citizen-facing web app for the **Illegal Dumping** POC (Hackathon: Selangor Waste Management).
+This Next.js application is the complete citizen-facing proof of concept for reporting and exploring illegal dumping in Selangor.
 
-| | |
-|---|---|
-| **Stack** | Next.js 16 (App Router) + React 19 + Tailwind CSS 4 |
-| **Path** | `C:\Users\User\Projects\swm` |
-| **Theme** | Soft Selangor red (`#C45C5C`) + soft gold (`#E8C547`) on cream |
-| **Pairs with** | Laravel Filament admin at `C:\laragon\www\swm-backend` |
+## Delivery boundary
 
----
+- The final demonstration is citizen-only and runs without the Laravel application.
+- Reports, responsible parties, classifications, routing, and solved outcomes use deterministic local data.
+- A newly submitted report persists in the browser and immediately appears on the activity dashboard.
+- Government operations, authentication, cloud storage, production AI, CCTV, and deep analytics are outside this delivery.
 
-## Project overview
+## Required citizen journey
 
-| Field | Detail |
-|---|---|
-| **Project** | Illegal Dumping |
-| **This app’s role** | Citizen dashboard + citizen reporting |
-| **Development type** | Web platform (citizen) — consumes Laravel API; AI / CV heavy lifting may live on backend |
-| **Main focus** | Report intake UX, hotspot visibility, trust via solved cases, waste categories, responsible-party transparency |
+### Explore activity
 
----
+- Show illegal-dumping activity on an interactive MapLibre map.
+- Render real OpenStreetMap building footprints as 3D extrusions at close zoom.
+- Show report points, changing hotspots, filters, solved cases, and responsible-party details.
+- Let a citizen select a report from either the map or report rail and inspect its location, status, evidence, and accountable party.
 
-## Scope owned by this frontend
+### Submit a report
 
-1. **Citizen dashboard** — 3D map, filters, solved cases, area ownership  
-2. **Citizen reporting** — live-camera capture, GPS, AI waste ID UX, department suggestion  
+- Require a live camera capture; do not expose a gallery or file-upload path.
+- Request the device location and record coordinates and accuracy.
+- Provide a clearly labelled Shah Alam demonstration location when GPS is denied or unavailable.
+- Simulate waste classification deterministically and allow the suggested category and description to be corrected.
+- Suggest the responsible department from the captured coordinates.
+- Save the report locally, then link to its detail view and the updated dashboard.
 
-Government ops, CCTV POC admin, and deep analytics live in the Laravel Filament project.
-
----
-
-## Citizen dashboard requirements
-
-| Feature | Details |
-|---|---|
-| **3D map visualisation** | Interactive 3D map of report activity across areas; show distribution and higher-activity zones. |
-| **Show solved reports** | Display resolved cases so citizens see government action and stay motivated to report. |
-| **Waste categories** | Classify / filter by waste type (e.g. construction waste, furniture, waste piles). |
-| **Responsible party details** | For an area, show department name, contractor, contact person, and contact info. |
-
----
-
-## Citizen reporting requirements
-
-| Feature | Details |
-|---|---|
-| **Report changing hotspots** | Citizens can report **new** illegal-dumping locations — not limited to a fixed location list (hotspots change). |
-| **Live camera only** | Require capture via **live camera**; do **not** allow gallery/file upload (reduce fake reports). |
-| **AI identifies waste type** | From the captured image, auto-identify or suggest waste type. |
-| **Auto-detect coordinates** | Capture GPS / device location with the report. |
-| **Suggest responsible department** | Auto-suggest the *jabatan* / party that should handle the case based on location and area data. |
-
----
-
-## Suggested frontend structure
-
-```
-src/
-  app/                 # App Router pages
-  components/
-    map/               # 3D map (e.g. Mapbox / Cesium / deck.gl — TBD)
-    reports/           # List, filters, solved feed
-    reporting/         # Live camera capture + submit flow
-    parties/           # Responsible party panels
-  lib/
-    api.ts             # Laravel API client
-    geo.ts             # GPS helpers
-    waste-ai.ts        # Client hooks to AI classify endpoint
-```
-
-### Suggested routes
+## Routes
 
 | Route | Purpose |
 |---|---|
-| `/` | Landing / entry |
-| `/dashboard` | Citizen map + filters + solved cases |
-| `/report` | Live-camera report wizard |
-| `/report/[id]` | Public-safe report detail (optional) |
+| `/` | Explain the citizen POC and route into the two main tasks. |
+| `/dashboard` | Explore the 3D activity map, reports, filters, solved cases, and responsible parties. |
+| `/report` | Complete the live-camera and GPS reporting flow. |
+| `/report/[id]` | Inspect a public-safe report detail, including a browser-local report. |
 
----
+## Technology and data
 
-## Data contracts (from Laravel)
+- Next.js 16 App Router, React 19, TypeScript, and Tailwind CSS 4.
+- MapLibre GL JS with OpenFreeMap vector tiles and OpenStreetMap-derived building data.
+- Browser APIs: `getUserMedia`, Geolocation, canvas capture, and `localStorage`.
+- No API base URL or backend process is required for the final POC.
 
-Minimum fields the UI should expect:
+## Visual direction
 
-**Report**
+The user-approved Awesomic reference is binding: an editorial zinc grid, DM Sans, large rounded panels, fine neutral borders, and near-monochrome surfaces. Orange (`#ff5a00`) is sparse functional punctuation for new activity, focus, and key status—not a decorative wash.
 
-- `id`, `latitude`, `longitude`
-- `waste_category` / `waste_type` (+ AI confidence)
-- `status` (`new` | `under_review` | `assigned` | `in_progress` | `solved` | `false_report`)
-- `image_url` (from live capture)
-- `submitted_at`, `solved_at` (optional)
-- `responsible_party` summary
-- `area` / `postcode` / `taman` (optional)
-
-**Responsible party**
-
-- department name, contractor, contact person, phone/email, zone coverage
-
----
-
-## Theme (soft Selangor)
-
-Defined in `src/app/globals.css`:
-
-| Token | Hex | Role |
-|---|---|---|
-| `--selangor-red` | `#C45C5C` | Primary actions / brand |
-| `--selangor-yellow` | `#E8C547` | Accent / highlights |
-| `--selangor-cream` | `#FFF8F2` | Page background |
-| `--selangor-ink` | `#4A2C2C` | Body text |
-
-Fonts: **Fraunces** (display) + **DM Sans** (UI).
-
----
-
-## Local setup
-
-```bash
-cd C:\Users\User\Projects\swm
-npm install
-npm run dev
-```
-
-App runs at `http://localhost:3000`.
-
-Set Laravel API base URL in `.env.local` (create when wiring API):
-
-```env
-NEXT_PUBLIC_API_BASE_URL=http://swm-backend.test/api
-```
-
----
-
-## Implementation notes for POC
-
-1. **Camera**: use `getUserMedia` / `<input capture="environment">` — block `accept` gallery-only paths where possible.  
-2. **GPS**: `navigator.geolocation` at capture time; store accuracy if available.  
-3. **Map**: start with 2D if needed, then upgrade to 3D visualisation for the hackathon demo.  
-4. **AI**: call backend endpoint that classifies waste from the uploaded frame; show editable suggestion before submit.  
-5. **Trust UX**: surface solved reports prominently near the map / feed.
-
----
-
-## Out of scope for this repo (handled in Laravel)
-
-- Government notifications & case workflow  
-- False-report review with mandatory reason  
-- Proof-of-resolution uploads by contractors  
-- Risk score ops queue, manpower/lorry AI recommendations  
-- Disposal route planning  
-- CCTV video upload POC admin  
-- Contractor / zone / *abang lori* analytics  
-
-See `REQUIREMENTS.md` in the Laravel project for those.
-
----
-
-## Reference
-
-Related citizen POC repo mentioned in requirements:  
-https://github.com/diniizzaty24/siaga-selangor.git
+All demonstration figures and behavior must be labelled honestly. Do not introduce production claims, service metrics, or unverified agency promises.
