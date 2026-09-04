@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Soft Selangor palette */
+  --selangor-red: #c45c5c;
+  --selangor-red-deep: #a84848;
+  --selangor-red-soft: #f3d6d6;
+  --selangor-yellow: #e8c547;
+  --selangor-yellow-soft: #f7ebc4;
+  --selangor-cream: #fff8f2;
+  --selangor-ink: #4a2c2c;
+
+  --background: var(--selangor-cream);
+  --foreground: var(--selangor-ink);
+  --primary: var(--selangor-red);
+  --primary-foreground: #fffaf7;
+  --accent: var(--selangor-yellow);
+  --muted: #f0e4dc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-selangor-red: var(--selangor-red);
+  --color-selangor-red-deep: var(--selangor-red-deep);
+  --color-selangor-red-soft: var(--selangor-red-soft);
+  --color-selangor-yellow: var(--selangor-yellow);
+  --color-selangor-yellow-soft: var(--selangor-yellow-soft);
+  --color-selangor-cream: var(--selangor-cream);
+  --color-selangor-ink: var(--selangor-ink);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-fraunces);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(232, 197, 71, 0.22), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 90% 10%, rgba(196, 92, 92, 0.16), transparent 50%),
+    var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
 }

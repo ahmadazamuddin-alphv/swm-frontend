@@ -1,67 +1,79 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-1 flex-col">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-6">
+        <p className="font-[family-name:var(--font-fraunces)] text-xl font-semibold tracking-tight text-selangor-red">
+          Selangor Waste Management
+        </p>
+        <nav className="flex items-center gap-4 text-sm text-selangor-ink/80">
+          <a className="hover:text-selangor-red" href="#dashboard">
+            Dashboard
+          </a>
+          <a
+            className="rounded-full bg-selangor-red px-4 py-2 text-primary-foreground transition hover:bg-selangor-red-deep"
+            href="#report"
+          >
+            Report dumping
+          </a>
+        </nav>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center gap-10 px-6 pb-20 pt-8">
+        <div className="max-w-2xl space-y-5">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-selangor-red/80">
+            Illegal Dumping POC
           </p>
+          <h1 className="font-[family-name:var(--font-fraunces)] text-4xl leading-tight text-selangor-ink sm:text-5xl">
+            Cleaner Selangor starts with every report.
+          </h1>
+          <p className="max-w-xl text-lg leading-relaxed text-selangor-ink/75">
+            Citizen dashboard and live-camera reporting for illegal dumping —
+            map hotspots, track clearance, and connect cases to the right
+            department.
+          </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <a
+              className="rounded-full bg-selangor-red px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-selangor-red-deep"
+              href="#report"
+            >
+              Submit a report
+            </a>
+            <a
+              className="rounded-full border border-selangor-red/25 bg-white/60 px-6 py-3 text-sm font-medium text-selangor-ink backdrop-blur transition hover:border-selangor-yellow hover:bg-selangor-yellow-soft/50"
+              href="#dashboard"
+            >
+              View map dashboard
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          {[
+            {
+              title: "Live camera reports",
+              body: "Capture on-site photos only — no gallery uploads.",
+            },
+            {
+              title: "AI waste ID",
+              body: "Suggest waste type and responsible jabatan from the image and location.",
+            },
+            {
+              title: "Solved visibility",
+              body: "Show cleared cases so citizens see action and stay engaged.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-selangor-red/10 bg-white/55 p-5 shadow-[0_8px_30px_rgba(74,44,44,0.04)] backdrop-blur"
+            >
+              <h2 className="font-[family-name:var(--font-fraunces)] text-lg text-selangor-ink">
+                {item.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-selangor-ink/70">
+                {item.body}
+              </p>
+            </div>
+          ))}
         </div>
       </main>
     </div>
