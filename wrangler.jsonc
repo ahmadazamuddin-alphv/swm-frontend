@@ -1,7 +1,31 @@
 {
   "name": "siaga-selangor-demo",
+  "main": "src/worker.ts",
   "compatibility_date": "2026-09-07",
   "assets": {
-    "directory": "./out"
-  }
+    "directory": "./out",
+    "binding": "ASSETS"
+  },
+  "containers": [
+    {
+      "class_name": "SiagaAdmin",
+      "image": "../swm-backend/Dockerfile",
+      "instance_type": "basic",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ADMIN",
+        "class_name": "SiagaAdmin"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["SiagaAdmin"]
+    }
+  ]
 }
