@@ -3,7 +3,7 @@ import { Container } from "@cloudflare/containers";
 export class SiagaAdmin extends Container {
   defaultPort = 8080;
   requiredPorts = [8080];
-  sleepAfter = "2h";
+  sleepAfter = "5m";
   envVars = {
     APP_URL: "https://siaga-selangor-demo.daniel-syauqi.workers.dev",
   };
