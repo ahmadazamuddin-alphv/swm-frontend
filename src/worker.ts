@@ -32,7 +32,7 @@ function isAdminRequest(pathname: string): boolean {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     if (isAdminRequest(new URL(request.url).pathname)) {
-      const admin = env.ADMIN.getByName("siaga-admin-demo-v2");
+      const admin = env.ADMIN.getByName("siaga-admin-demo-v3");
       await admin.startAndWaitForPorts();
 
       return admin.fetch(request);
