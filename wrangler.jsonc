@@ -1,0 +1,7 @@
+{
+  "name": "siaga-selangor-demo",
+  "compatibility_date": "2026-09-07",
+  "assets": {
+    "directory": "./out"
+  }
+}

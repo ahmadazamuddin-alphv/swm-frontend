@@ -1,6 +1,11 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ReportDetailClient } from "@/components/reports/ReportDetailClient";
 import { fetchReport } from "@/lib/api";
+import { MOCK_REPORTS } from "@/lib/mock-data";
+
+export function generateStaticParams() {
+  return MOCK_REPORTS.map((report) => ({ id: report.id }));
+}
 
 export default async function ReportDetailPage({
   params,

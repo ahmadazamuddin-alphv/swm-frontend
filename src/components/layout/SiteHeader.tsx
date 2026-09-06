@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { ArrowRightIcon } from "@/components/ui/Icons";
 
 const links = [
@@ -12,53 +13,56 @@ export function SiteHeader({ compact = false }: { compact?: boolean }) {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 shrink-0 border-b border-cloud bg-snow">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 shrink-0">
       <div
-        className={`mx-auto flex w-full max-w-[1200px] items-center justify-between px-5 sm:px-8 ${
-          compact ? "h-16" : "h-[72px]"
-        }`}
+        className={`pointer-events-auto mx-auto flex w-full items-center justify-between px-4 pt-4 sm:px-6 sm:pt-5 ${compact ? "" : ""}`}
       >
         <Link
           href="/"
           aria-label="Selangor Waste Management home"
-          className="group inline-flex items-center gap-3 rounded-xl text-sm font-semibold text-obsidian"
+          className="group inline-flex items-center rounded-[18px] border border-[#ead9b8]/80 bg-[#fff8ea]/90 px-3 py-2 text-sm font-semibold text-obsidian shadow-[0_10px_28px_rgba(64,35,10,0.12)] backdrop-blur-md"
         >
-          <span className="grid size-8 place-items-center rounded-xl bg-obsidian text-snow">
-            <span className="size-2.5 rounded-[4px] bg-ember transition-transform group-hover:rotate-45" />
-          </span>
-          <span className="hidden sm:inline">Selangor Waste</span>
-          <span className="sm:hidden">SWM</span>
+          <Image
+            src="/brand/siaga-selangor-wordmark.png"
+            alt="Siaga Selangor"
+            width={2172}
+            height={724}
+            priority
+            className="h-12 w-auto max-w-[68vw] object-contain drop-shadow-[0_8px_14px_rgba(64,35,10,0.14)] sm:h-14"
+          />
         </Link>
 
-        <nav aria-label="Primary navigation" className="flex items-center gap-2">
-          {links.map((link) => {
-            const active =
-              pathname === link.href || pathname.startsWith(`${link.href}/`);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={active ? "page" : undefined}
-                className={`hidden rounded-[14px] px-4 py-2.5 text-sm sm:inline-flex ${
-                  active
-                    ? "bg-paper font-medium text-obsidian"
-                    : "text-steel hover:bg-paper hover:text-obsidian"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-          <Link
-            href="/report"
-            aria-current={pathname.startsWith("/report") ? "page" : undefined}
-            className="inline-flex items-center gap-2 rounded-[14px] border border-[#2c2e34] bg-obsidian px-4 py-2.5 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5"
-          >
-            <span className="max-[520px]:hidden">Report dumping</span>
-            <span className="min-[521px]:hidden">Report</span>
-            <ArrowRightIcon className="size-4" />
-          </Link>
-        </nav>
+        {pathname !== "/dashboard" && (
+          <nav aria-label="Primary navigation" className="flex items-center gap-2 rounded-[18px] border border-[#ead9b8]/80 bg-[#fff8ea]/90 p-1.5 shadow-[0_10px_28px_rgba(64,35,10,0.12)] backdrop-blur-md">
+            {links.map((link) => {
+              const active =
+                pathname === link.href || pathname.startsWith(`${link.href}/`);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`hidden rounded-[14px] px-4 py-2.5 text-sm sm:inline-flex ${
+                    active
+                      ? "bg-[#D2222B] font-medium text-white shadow-[0_4px_12px_rgba(210,34,43,0.24)]"
+                      : "text-[#6e5c4b] hover:bg-[#ffedbd] hover:text-[#8f1822]"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <Link
+              href="/report"
+              aria-current={pathname.startsWith("/report") ? "page" : undefined}
+              className="inline-flex items-center gap-2 rounded-[14px] bg-[#D2222B] px-4 py-2.5 text-sm font-medium text-white shadow-[0_6px_16px_rgba(210,34,43,0.25)] hover:-translate-y-0.5 hover:bg-[#a91824]"
+            >
+              <span className="max-[520px]:hidden">Report dumping</span>
+              <span className="min-[521px]:hidden">Report</span>
+              <ArrowRightIcon className="size-4" />
+            </Link>
+          </nav>
+        )}
       </div>
     </header>
   );

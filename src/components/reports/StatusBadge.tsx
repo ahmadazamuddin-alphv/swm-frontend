@@ -2,12 +2,12 @@ import { STATUS_LABELS } from "@/lib/mock-data";
 import type { ReportStatus } from "@/lib/types";
 
 const STYLES: Record<ReportStatus, string> = {
-  new: "bg-ember text-snow",
-  under_review: "bg-graphite text-snow",
-  assigned: "bg-iron text-snow",
-  in_progress: "bg-mist text-graphite",
-  solved: "border border-mist bg-snow text-graphite",
-  false_report: "bg-cloud text-fog",
+  new: "border border-[#2563eb] bg-[#2563eb] text-white",
+  under_review: "border border-[#8b5cf6] bg-[#8b5cf6] text-white",
+  assigned: "border border-[#06b6d4] bg-[#06b6d4] text-[#083344]",
+  in_progress: "border border-[#f59e0b] bg-[#f59e0b] text-[#451a03]",
+  solved: "border border-[#16a34a] bg-[#16a34a] text-white",
+  false_report: "border border-[#ef4444] bg-[#ef4444] text-white",
 };
 
 export function StatusBadge({ status }: { status: ReportStatus }) {

@@ -5,10 +5,9 @@ import Link from "next/link";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import {
   ArrowRightIcon,
-  CloseIcon,
   RotateCcwIcon,
 } from "@/components/ui/Icons";
-import { WASTE_CATEGORY_LABELS, getPartyById } from "@/lib/mock-data";
+import { WASTE_CATEGORY_LABELS } from "@/lib/mock-data";
 import {
   MOCK_POTHOLES,
   POTHOLE_SEVERITY_LABELS,
@@ -18,7 +17,6 @@ import {
   isPotholeSolved,
   streetRiskLabel,
 } from "@/lib/pothole-ai";
-import { formatCoords } from "@/lib/geo";
 import {
   clearDemoReport,
   getDemoReportServerSnapshot,
@@ -32,7 +30,6 @@ import {
   type ReportFilterState,
 } from "@/components/reports/ReportFilters";
 import { ReportList } from "@/components/reports/ReportList";
-import { StatusBadge } from "@/components/reports/StatusBadge";
 import type { MapSelectableCase } from "@/components/map/ActivityMap";
 
 const ActivityMap = dynamic(
@@ -59,6 +56,8 @@ function reportToMapCase(report: Report): MapSelectableCase {
     title: WASTE_CATEGORY_LABELS[report.wasteCategory],
     area: report.area,
     subtitle: report.taman,
+    imageUrl: report.imageUrl,
+    detailHref: `/report/${report.id}`,
   };
 }
 
@@ -72,6 +71,7 @@ function potholeToMapCase(pothole: PotholeCase): MapSelectableCase {
     title: pothole.title,
     area: pothole.area,
     subtitle: pothole.roadName,
+    imageUrl: pothole.imageUrl,
   };
 }
 
@@ -97,8 +97,8 @@ function SolvedLabel({ solved }: { solved: boolean }) {
     <span
       className={`rounded-xl px-2 py-0.5 text-[10px] font-medium ${
         solved
-          ? "border border-mist bg-snow text-graphite"
-          : "bg-obsidian text-snow"
+          ? "border border-[#16a34a] bg-[#16a34a] text-white"
+          : "border border-[#2563eb] bg-[#2563eb] text-white"
       }`}
     >
       {solved ? "Solved" : "Open"}
@@ -143,6 +143,8 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
   });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAllMobile, setShowAllMobile] = useState(false);
+  const [reportsMinimized, setReportsMinimized] = useState(true);
+  const [headingCollapsed, setHeadingCollapsed] = useState(false);
   const [potholeArea, setPotholeArea] = useState<string | "all">("all");
   const [potholeSeverity, setPotholeSeverity] = useState<
     PotholeCase["severity"] | "all"
@@ -186,19 +188,9 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
     return filteredReports.map(reportToMapCase);
   }, [mode, filteredPotholes, filteredReports]);
 
-  const selectedReport =
-    mode === "dumping"
-      ? (allReports.find((report) => report.id === selectedId) ?? null)
-      : null;
   const selectedPothole =
     mode === "pothole"
       ? (MOCK_POTHOLES.find((pothole) => pothole.id === selectedId) ?? null)
-      : null;
-
-  const party = selectedReport
-    ? (getPartyById(selectedReport.responsiblePartyId) ?? null)
-    : selectedPothole
-      ? (getPartyById(selectedPothole.responsiblePartyId) ?? null)
       : null;
 
   const openCount =
@@ -215,25 +207,6 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
       ? allReports.filter((report) => report.status === "solved").length
       : MOCK_POTHOLES.filter((p) => p.status === "solved").length;
 
-  const solvedPreviewReports = allReports
-    .filter((report) => report.status === "solved")
-    .sort(
-      (a, b) =>
-        new Date(b.solvedAt ?? b.submittedAt).getTime() -
-        new Date(a.solvedAt ?? a.submittedAt).getTime(),
-    )
-    .slice(0, 3);
-
-  const solvedPreviewPotholes = MOCK_POTHOLES.filter(
-    (p) => p.status === "solved",
-  )
-    .sort(
-      (a, b) =>
-        new Date(b.solvedAt ?? b.submittedAt).getTime() -
-        new Date(a.solvedAt ?? a.submittedAt).getTime(),
-    )
-    .slice(0, 3);
-
   function switchMode(next: DashboardMode) {
     setMode(next);
     setSelectedId(null);
@@ -249,17 +222,36 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
     mode === "dumping" ? filteredReports.length : filteredPotholes.length;
 
   return (
-    <main className="mx-auto flex min-h-0 w-full max-w-[1200px] flex-1 flex-col gap-4 px-5 pb-5 pt-4 sm:px-8 sm:pb-8 sm:pt-6 lg:overflow-hidden">
-      <div className="flex shrink-0 flex-wrap items-end justify-between gap-4">
-        <div className="min-w-0">
-          <div className="inline-flex rounded-[16px] border border-cloud bg-snow p-1">
+    <main className="relative min-h-[100dvh] w-full overflow-hidden bg-[#f8f1e5] px-3 pb-3 pt-20 sm:px-5 sm:pb-5 sm:pt-24">
+      {headingCollapsed ? (
+        <button
+          type="button"
+          onClick={() => setHeadingCollapsed(false)}
+          className="absolute left-4 top-28 z-20 inline-flex items-center gap-2 rounded-full border border-[#ead9b8] bg-[#fff8ea]/95 px-4 py-2.5 text-xs font-semibold text-[#a91824] shadow-[0_10px_22px_rgba(64,35,10,0.14)] backdrop-blur-md hover:bg-white sm:left-6 sm:top-32"
+        >
+          <span className="text-base leading-none">+</span>
+          Show overview
+        </button>
+      ) : (
+      <div className="swm-dashboard-heading absolute left-4 right-4 top-28 z-20 w-auto rounded-[24px] border border-[#ead9b8]/90 bg-[#fff8ea]/90 p-3 shadow-[0_16px_38px_rgba(64,35,10,0.12)] backdrop-blur-md sm:left-6 sm:right-auto sm:top-32 sm:w-[min(610px,calc(100vw-3rem))] sm:p-4">
+        <button
+          type="button"
+          onClick={() => setHeadingCollapsed(true)}
+          aria-label="Hide map overview"
+          title="Hide overview"
+          className="absolute -right-2 -top-2 grid size-8 place-items-center rounded-full border border-[#ead9b8] bg-white text-lg leading-none text-[#6e5c4b] shadow-[0_6px_14px_rgba(64,35,10,0.14)] hover:border-[#D2222B] hover:text-[#a91824]"
+        >
+          −
+        </button>
+        <div className="flex items-start justify-between gap-3">
+          <div className="inline-flex rounded-[14px] border border-[#ead9b8] bg-white/70 p-1">
             <button
               type="button"
               onClick={() => switchMode("dumping")}
               className={`rounded-[12px] px-3.5 py-2 text-xs font-medium transition ${
                 mode === "dumping"
-                  ? "bg-obsidian text-snow"
-                  : "text-steel hover:text-obsidian"
+                  ? "bg-[#f8d8d4] text-[#a91824] shadow-[0_4px_12px_rgba(210,34,43,0.12)] ring-1 ring-[#e9aaa4]"
+                  : "text-[#6e5c4b] hover:bg-[#ffedbd] hover:text-[#8f1822]"
               }`}
             >
               Illegal dumping
@@ -269,39 +261,22 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
               onClick={() => switchMode("pothole")}
               className={`rounded-[12px] px-3.5 py-2 text-xs font-medium transition ${
                 mode === "pothole"
-                  ? "bg-obsidian text-snow"
-                  : "text-steel hover:text-obsidian"
+                  ? "bg-[#f8d8d4] text-[#a91824] shadow-[0_4px_12px_rgba(210,34,43,0.12)] ring-1 ring-[#e9aaa4]"
+                  : "text-[#6e5c4b] hover:bg-[#ffedbd] hover:text-[#8f1822]"
               }`}
             >
               Potholes
             </button>
           </div>
-          <h1 className="mt-3 truncate text-2xl font-semibold tracking-[-0.025em] text-obsidian sm:text-[32px]">
-            {mode === "dumping"
-              ? "Illegal dumping across Selangor"
-              : "Potholes across Selangor"}
-          </h1>
-          <p className="mt-1.5 inline-flex items-center gap-2 text-xs text-fog">
-            <span
-              className={`size-1.5 rounded-[3px] ${
-                mode === "pothole" ? "bg-amber-500" : "bg-ember"
-              }`}
-            />
-            {mode === "dumping"
-              ? "Citizen activity · illustrative POC data"
-              : "Road defects · diamond markers on the same map"}
-          </p>
-        </div>
-
-        <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex shrink-0 items-center gap-3">
           <p className="flex items-baseline gap-1.5">
-            <span className="tabular-nums text-2xl font-semibold text-obsidian">
+            <span className="tabular-nums text-2xl font-semibold text-[#17100b]">
               {openCount}
             </span>
             <span className="text-xs text-fog">active</span>
           </p>
           <p className="flex items-baseline gap-1.5">
-            <span className="tabular-nums text-2xl font-semibold text-obsidian">
+            <span className="tabular-nums text-2xl font-semibold text-[#17100b]">
               {solvedCount}
             </span>
             <span className="text-xs text-fog">solved</span>
@@ -310,152 +285,131 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
             <button
               type="button"
               onClick={resetDemo}
-              className="inline-flex items-center gap-2 rounded-[14px] border border-cloud bg-snow px-3 py-2 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
+              className="inline-flex items-center gap-2 rounded-[14px] border border-[#ead9b8] bg-white/80 px-3 py-2 text-xs font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#8f1822]"
             >
               <RotateCcwIcon className="size-4" />
               <span className="hidden sm:inline">Reset demo</span>
-            </button>
+              </button>
+            )}
+          </div>
+        </div>
+
+        <h1 className="mt-4 whitespace-normal text-2xl font-semibold leading-tight tracking-[-0.035em] text-[#17100b] sm:text-[32px]">
+          {mode === "dumping"
+            ? "Illegal dumping across Selangor"
+            : "Potholes across Selangor"}
+        </h1>
+        <p className="mt-2 inline-flex items-center gap-2 text-xs text-fog">
+          <span
+            className={`size-1.5 rounded-[3px] ${
+              mode === "pothole" ? "bg-[#FDB915]" : "bg-[#D2222B]"
+            }`}
+          />
+          {mode === "dumping"
+            ? "Citizen activity · illustrative POC data"
+            : "Road defects · diamond markers on the same map"}
+        </p>
+        <div className="mt-5 border-t border-[#ead9b8] pt-4">
+          {mode === "dumping" ? (
+            <ReportFilters
+              value={filters}
+              areas={areas}
+              onChange={setFilters}
+              compact
+            />
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
+                Severity
+                <select
+                  className="rounded-[12px] border border-[#ead9b8] bg-[#fff8ea]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(64,35,10,0.08)] outline-none focus:border-[#D2222B]"
+                  value={potholeSeverity}
+                  onChange={(e) =>
+                    setPotholeSeverity(
+                      e.target.value as PotholeCase["severity"] | "all",
+                    )
+                  }
+                >
+                  <option value="all">All severities</option>
+                  {(
+                    Object.keys(POTHOLE_SEVERITY_LABELS) as PotholeCase["severity"][]
+                  ).map((s) => (
+                    <option key={s} value={s}>
+                      {POTHOLE_SEVERITY_LABELS[s]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
+                Area
+                <select
+                  className="rounded-[12px] border border-[#ead9b8] bg-[#fff8ea]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(64,35,10,0.08)] outline-none focus:border-[#D2222B]"
+                  value={potholeArea}
+                  onChange={(e) => setPotholeArea(e.target.value)}
+                >
+                  <option value="all">All areas</option>
+                  {potholeAreas.map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           )}
         </div>
       </div>
+      )}
 
-      <div className="shrink-0">
-        {mode === "dumping" ? (
-          <ReportFilters
-            value={filters}
-            areas={areas}
-            onChange={setFilters}
-            compact
-          />
-        ) : (
-          <div className="flex flex-wrap gap-2">
-            <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
-              Severity
-              <select
-                className="rounded-[12px] border border-cloud bg-snow px-2.5 py-1.5 text-xs text-obsidian outline-none focus:border-mist"
-                value={potholeSeverity}
-                onChange={(e) =>
-                  setPotholeSeverity(
-                    e.target.value as PotholeCase["severity"] | "all",
-                  )
-                }
-              >
-                <option value="all">All severities</option>
-                {(
-                  Object.keys(POTHOLE_SEVERITY_LABELS) as PotholeCase["severity"][]
-                ).map((s) => (
-                  <option key={s} value={s}>
-                    {POTHOLE_SEVERITY_LABELS[s]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
-              Area
-              <select
-                className="rounded-[12px] border border-cloud bg-snow px-2.5 py-1.5 text-xs text-obsidian outline-none focus:border-mist"
-                value={potholeArea}
-                onChange={(e) => setPotholeArea(e.target.value)}
-              >
-                <option value="all">All areas</option>
-                {potholeAreas.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        )}
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-rows-[440px_auto] gap-4 lg:grid-cols-[minmax(0,1.72fr)_360px] lg:grid-rows-1">
-        <div className="relative min-h-0">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 min-h-0">
           <ActivityMap
             cases={mapCases}
             mode={mode}
             selectedId={selectedId}
-            onSelect={setSelectedId}
+            onSelect={(id) => {
+              setSelectedId(id);
+              if (window.matchMedia("(max-width: 639px)").matches) {
+                setHeadingCollapsed(true);
+              }
+            }}
           />
 
-          {selectedReport && (
-            <article className="absolute inset-x-3 bottom-16 z-20 max-h-[48%] overflow-y-auto rounded-[28px] border border-cloud bg-snow p-3 shadow-[0_12px_28px_rgba(9,9,11,0.1)] sm:inset-x-auto sm:bottom-4 sm:left-4 sm:w-[440px] sm:p-4">
-              <div className="flex gap-3.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={selectedReport.imageUrl}
-                  alt=""
-                  className="h-[86px] w-[96px] shrink-0 rounded-[18px] object-cover"
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <StatusBadge status={selectedReport.status} />
-                    {selectedReport.id.startsWith("rpt-demo-") && (
-                      <span className="rounded-xl border border-cloud px-2 py-0.5 text-[10px] text-fog">
-                        Just reported
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedId(null)}
-                      aria-label="Close report preview"
-                      className="ml-auto grid size-8 place-items-center rounded-xl text-fog hover:bg-paper hover:text-obsidian"
-                    >
-                      <CloseIcon className="size-4" />
-                    </button>
-                  </div>
-                  <h2 className="mt-2 truncate text-sm font-semibold text-obsidian sm:text-base">
-                    {WASTE_CATEGORY_LABELS[selectedReport.wasteCategory]}
-                  </h2>
-                  <p className="mt-0.5 truncate text-xs text-fog">
-                    {selectedReport.taman ? `${selectedReport.taman}, ` : ""}
-                    {selectedReport.area}
-                  </p>
-                  <p className="tabular-nums mt-1 truncate font-mono text-[10px] text-ash">
-                    {formatCoords(
-                      selectedReport.latitude,
-                      selectedReport.longitude,
-                      4,
-                    )}
-                  </p>
-                </div>
-              </div>
-
-              {party && (
-                <div className="mt-3 flex items-center justify-between gap-4 border-t border-cloud pt-3">
-                  <p className="min-w-0 truncate text-xs text-steel">
-                    {party.department}
-                  </p>
-                  <Link
-                    href={`/report/${selectedReport.id}`}
-                    className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-obsidian hover:text-ember"
-                  >
-                    Full detail
-                    <ArrowRightIcon className="size-3.5" />
-                  </Link>
-                </div>
-              )}
-            </article>
-          )}
-
-          {selectedPothole && (
-            <div className="pointer-events-none absolute inset-x-3 bottom-14 z-20 sm:inset-x-auto sm:bottom-4 sm:left-4">
-              <div className="pointer-events-auto inline-flex max-w-[min(100%,360px)] items-center gap-2 rounded-[18px] border border-cloud bg-snow/95 px-3 py-2 shadow-[0_8px_24px_rgba(9,9,11,0.1)] backdrop-blur">
-                <SolvedLabel solved={isPotholeSolved(selectedPothole)} />
-                <span className="truncate text-xs font-medium text-obsidian">
-                  {selectedPothole.roadName}
-                </span>
-                <span className="tabular-nums rounded-lg bg-amber-500 px-1.5 py-0.5 text-[10px] font-medium text-snow">
-                  {buildPotholeStreetAiInsight(selectedPothole).overallPercent}%
-                  risk
-                </span>
-              </div>
-            </div>
-          )}
         </div>
 
-        <aside className="flex flex-col overflow-hidden rounded-[36px] border border-cloud bg-snow lg:min-h-0">
-          <div className="flex shrink-0 items-baseline justify-between gap-3 border-b border-cloud px-5 py-4">
+        <aside
+          className={
+            reportsMinimized
+              ? "absolute bottom-20 right-3 z-20 flex w-auto max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-[18px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_16px_38px_rgba(64,35,10,0.16)] backdrop-blur-md lg:bottom-14 lg:right-5"
+              : "absolute bottom-3 left-3 right-3 z-20 flex max-h-[43dvh] flex-col overflow-hidden rounded-[28px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_16px_38px_rgba(64,35,10,0.16)] backdrop-blur-md lg:bottom-5 lg:left-auto lg:right-5 lg:top-28 lg:w-[360px] lg:max-h-[calc(100dvh-9rem)]"
+          }
+        >
+          <div
+            className={`flex shrink-0 items-center justify-between gap-3 ${
+              reportsMinimized
+                ? "cursor-pointer px-3 py-2 transition-colors hover:bg-[#fff1dc]"
+                : "border-b border-cloud px-5 py-4"
+            }`}
+            onClick={
+              reportsMinimized
+                ? () => setReportsMinimized(false)
+                : undefined
+            }
+            onKeyDown={
+              reportsMinimized
+                ? (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setReportsMinimized(false);
+                    }
+                  }
+                : undefined
+            }
+            role={reportsMinimized ? "button" : undefined}
+            tabIndex={reportsMinimized ? 0 : undefined}
+            aria-label={reportsMinimized ? "Expand reports" : undefined}
+            aria-expanded={!reportsMinimized}
+          >
             <div>
               <h2 className="text-base font-semibold text-obsidian">
                 {mode === "dumping"
@@ -464,7 +418,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                     ? "Case analysis"
                     : "Pothole cases"}
               </h2>
-              <p className="mt-0.5 text-xs text-fog">
+              <p className={`mt-0.5 text-xs text-fog ${reportsMinimized ? "sr-only" : ""}`}>
                 {mode === "dumping"
                   ? "Select a case to move the map"
                   : selectedPothole
@@ -472,20 +426,39 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                     : "Select a case to move the map"}
               </p>
             </div>
-            {mode === "pothole" && selectedPothole ? (
-              <button
-                type="button"
-                onClick={() => setSelectedId(null)}
-                className="rounded-[12px] border border-cloud px-2.5 py-1.5 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
-              >
-                Back
-              </button>
-            ) : (
-              <span className="tabular-nums text-xs text-fog">{listCount}</span>
-            )}
+            <div className="flex items-center gap-2">
+              {mode === "pothole" && selectedPothole ? (
+                <button
+                  type="button"
+                  onClick={() => setSelectedId(null)}
+                  className="rounded-[12px] border border-cloud px-2.5 py-1.5 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
+                >
+                  Back
+                </button>
+              ) : (
+                <span className="tabular-nums text-xs text-fog">{listCount}</span>
+              )}
+              {reportsMinimized ? (
+                <span
+                  aria-hidden="true"
+                  className="grid size-7 place-items-center rounded-[10px] border border-[#ead9b8] bg-white/70 text-lg leading-none text-[#6e5c4b]"
+                >
+                  +
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  aria-label="Minimize reports"
+                  onClick={() => setReportsMinimized(true)}
+                  className="grid size-7 place-items-center rounded-[10px] border border-[#ead9b8] bg-white/70 text-lg leading-none text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824]"
+                >
+                  <span aria-hidden="true">−</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          {mode === "dumping" ? (
+          {!reportsMinimized && (mode === "dumping" ? (
             <>
               <div className="px-3 lg:hidden">
                 <ReportList
@@ -520,46 +493,6 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                 />
               </div>
 
-              <div className="hidden flex-col border-t border-cloud bg-paper/70 lg:flex lg:min-h-0 lg:flex-1">
-                <div className="shrink-0 px-5 pb-2 pt-4">
-                  <h2 className="text-sm font-semibold text-obsidian">
-                    Recently solved
-                  </h2>
-                  <p className="mt-0.5 text-[11px] text-fog">
-                    Cleared cases, ready to locate
-                  </p>
-                </div>
-                <ul className="space-y-1 px-3 pb-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
-                  {solvedPreviewReports.map((report) => (
-                    <li key={report.id}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedId(report.id)}
-                        className={`flex w-full items-center gap-2.5 rounded-[14px] px-2 py-2 text-left text-xs ${
-                          selectedId === report.id
-                            ? "bg-snow text-obsidian"
-                            : "text-steel hover:bg-snow hover:text-obsidian"
-                        }`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={report.imageUrl}
-                          alt=""
-                          className="h-10 w-12 shrink-0 rounded-xl object-cover"
-                        />
-                        <span className="min-w-0">
-                          <span className="block truncate font-medium text-obsidian">
-                            {WASTE_CATEGORY_LABELS[report.wasteCategory]}
-                          </span>
-                          <span className="block truncate text-[11px] text-fog">
-                            {report.area}
-                          </span>
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </>
           ) : selectedPothole ? (
             <div className="flex min-h-0 flex-1 flex-col gap-4 p-4">
@@ -637,11 +570,6 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                       {insight.recommendation}
                     </p>
 
-                    {party && (
-                      <p className="mt-auto truncate text-[11px] text-fog">
-                        {party.department}
-                      </p>
-                    )}
                   </>
                 );
               })()}
@@ -693,27 +621,23 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                 )}
               </div>
 
-              <div className="shrink-0 border-t border-cloud bg-paper/70 px-4 py-3">
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-fog">
-                  Recently solved
-                </p>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {solvedPreviewPotholes.map((pothole) => (
-                    <button
-                      key={pothole.id}
-                      type="button"
-                      onClick={() => setSelectedId(pothole.id)}
-                      className="rounded-full border border-cloud bg-snow px-2.5 py-1 text-[11px] text-steel hover:border-mist hover:text-obsidian"
-                    >
-                      {pothole.roadName.split(" ").slice(0, 2).join(" ")}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </>
-          )}
+          ))}
         </aside>
       </div>
+
+      {mode === "dumping" && (
+        <Link
+          href="/report"
+          className="swm-report-fab fixed bottom-2 right-3 z-10 inline-flex items-center gap-2 rounded-[18px] bg-[#D2222B] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(210,34,43,0.3)] hover:-translate-y-1 hover:bg-[#a91824] sm:bottom-7 sm:left-1/2 sm:right-auto sm:z-30 sm:-translate-x-1/2 sm:px-6"
+        >
+          <span className="grid size-6 place-items-center rounded-full bg-[#FDB915] text-[#4a1b0d] text-lg leading-none">
+            +
+          </span>
+          Report dumping
+          <ArrowRightIcon className="size-4" />
+        </Link>
+      )}
     </main>
   );
 }

@@ -11,7 +11,6 @@ import {
   type Map,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { BuildingsIcon } from "@/components/ui/Icons";
 import {
   ACTIVITY_REPORT_SOURCE_ID,
   buildActivityMapPlan,
@@ -32,10 +31,17 @@ const CITY_VIEW = {
   bearing: -22,
 };
 
-const ACTIVITY_BOUNDS: [[number, number], [number, number]] = [
-  [101.395, 2.982],
-  [101.646, 3.128],
+const SELANGOR_BOUNDS: [[number, number], [number, number]] = [
+  [100.78, 2.56],
+  [102.02, 3.91],
 ];
+
+const SELANGOR_DISTRICT_SOURCE_ID = "selangor-districts";
+const SELANGOR_MASK_SOURCE_ID = "selangor-state-mask";
+const SELANGOR_MASK_LAYER_ID = "selangor-state-mask";
+const SELANGOR_DISTRICT_FILL_ID = "selangor-district-fills";
+const SELANGOR_DISTRICT_LINE_ID = "selangor-district-lines";
+const SELANGOR_DISTRICT_LABEL_ID = "selangor-district-labels";
 
 const BASEMAP_STYLE = "https://tiles.openfreemap.org/styles/bright";
 
@@ -49,6 +55,8 @@ export type MapSelectableCase = {
   title: string;
   area: string;
   subtitle?: string;
+  imageUrl?: string;
+  detailHref?: string;
 };
 
 function toMapPoints(
@@ -83,10 +91,14 @@ function createPinElement(kind: MapCaseKind): HTMLDivElement {
 
 function createPopupContent(item: MapSelectableCase): HTMLDivElement {
   const root = document.createElement("div");
+  const header = document.createElement("div");
   const title = document.createElement("p");
   const meta = document.createElement("p");
   const coords = document.createElement("code");
+  const status = document.createElement("span");
 
+  root.className = "swm-map-popup__body";
+  header.className = "swm-map-popup__header";
   title.className = "swm-map-popup__title";
   title.textContent = item.title;
   meta.className = "swm-map-popup__meta";
@@ -95,13 +107,32 @@ function createPopupContent(item: MapSelectableCase): HTMLDivElement {
     : item.area;
   coords.className = "swm-map-popup__coords";
   coords.textContent = formatCoords(item.latitude, item.longitude);
+  status.className = `swm-map-popup__status swm-map-popup__status--${item.status}`;
+  status.textContent = item.status.replaceAll("_", " ");
 
-  root.append(title, meta, coords);
+  if (item.imageUrl) {
+    const image = document.createElement("img");
+    image.className = "swm-map-popup__image";
+    image.src = item.imageUrl;
+    image.alt = "";
+    root.append(image);
+  }
+
+  header.append(title, status);
+  root.append(header, meta, coords);
+  if (item.detailHref) {
+    const link = document.createElement("a");
+    link.className = "swm-map-popup__link";
+    link.href = item.detailHref;
+    link.textContent = "Full detail →";
+    root.append(link);
+  }
   return root;
 }
 
 function tuneBaseMap(map: Map) {
   for (const layer of map.getStyle().layers) {
+    if (layer.id.startsWith("selangor-")) continue;
     const id = layer.id.toLowerCase();
 
     if (layer.type === "background") {
@@ -137,6 +168,102 @@ function tuneBaseMap(map: Map) {
   }
 }
 
+function installSelangorDistrictLayers(map: Map) {
+  if (!map.getSource(SELANGOR_MASK_SOURCE_ID)) {
+    map.addSource(SELANGOR_MASK_SOURCE_ID, {
+      type: "geojson",
+      data: "/geo/selangor-mask.geojson",
+    });
+  }
+
+  if (!map.getLayer(SELANGOR_MASK_LAYER_ID)) {
+    map.addLayer({
+      id: SELANGOR_MASK_LAYER_ID,
+      type: "fill",
+      source: SELANGOR_MASK_SOURCE_ID,
+      paint: {
+        "fill-color": "#c7c9d1",
+        "fill-opacity": 1,
+      },
+    });
+  }
+
+  if (!map.getSource(SELANGOR_DISTRICT_SOURCE_ID)) {
+    map.addSource(SELANGOR_DISTRICT_SOURCE_ID, {
+      type: "geojson",
+      data: "/geo/selangor-districts.geojson",
+    });
+  }
+
+  if (!map.getLayer(SELANGOR_DISTRICT_FILL_ID)) {
+    map.addLayer({
+      id: SELANGOR_DISTRICT_FILL_ID,
+      type: "fill",
+      source: SELANGOR_DISTRICT_SOURCE_ID,
+      paint: {
+        "fill-color": [
+          "match",
+          ["get", "Daerah"],
+          "GOMBAK",
+          "#90dbf4",
+          "HULU LANGAT",
+          "#f6bd60",
+          "HULU SELANGOR",
+          "#b8e0d2",
+          "KLANG",
+          "#f28482",
+          "KUALA LANGAT",
+          "#cdb4db",
+          "KUALA SELANGOR",
+          "#f5cac3",
+          "PETALING",
+          "#a9def9",
+          "SABAK BERNAM",
+          "#84a59d",
+          "SEPANG",
+          "#f7ede2",
+          "#f7ede2",
+        ],
+        "fill-opacity": 0.48,
+      },
+    });
+  }
+
+  if (!map.getLayer(SELANGOR_DISTRICT_LINE_ID)) {
+    map.addLayer({
+      id: SELANGOR_DISTRICT_LINE_ID,
+      type: "line",
+      source: SELANGOR_DISTRICT_SOURCE_ID,
+      paint: {
+        "line-color": "#7c2d12",
+        "line-width": 1.4,
+        "line-opacity": 0.72,
+      },
+    });
+  }
+
+  if (!map.getLayer(SELANGOR_DISTRICT_LABEL_ID)) {
+    map.addLayer({
+      id: SELANGOR_DISTRICT_LABEL_ID,
+      type: "symbol",
+      source: SELANGOR_DISTRICT_SOURCE_ID,
+      layout: {
+        "text-field": ["get", "Nam"],
+        "text-size": 11,
+        "text-font": ["Noto Sans Regular"],
+        "text-anchor": "center",
+        "text-allow-overlap": false,
+      },
+      paint: {
+        "text-color": "#4a1b0d",
+        "text-halo-color": "rgba(255,248,234,0.92)",
+        "text-halo-width": 1.5,
+      },
+    });
+  }
+
+}
+
 function ensurePotholeIcon(map: Map) {
   if (map.hasImage("pothole-diamond")) return;
   const image = createPotholeDiamondImage(48);
@@ -150,6 +277,7 @@ function installActivityLayers(
   selectedId?: string | null,
 ) {
   ensurePotholeIcon(map);
+  installSelangorDistrictLayers(map);
 
   const plan = buildActivityMapPlan(
     map.getStyle(),
@@ -233,12 +361,17 @@ function installActivityLayers(
 
 function showActivityOverview(map: Map) {
   const compact = map.getContainer().clientWidth < 600;
-  map.fitBounds(ACTIVITY_BOUNDS, {
-    padding: compact ? 34 : 58,
-    maxZoom: compact ? 10.8 : 11.4,
+  const zoomBoost = compact ? 0.25 : 0.45;
+  map.fitBounds(SELANGOR_BOUNDS, {
+    padding: compact ? 12 : 20,
+    maxZoom: compact ? 10.8 : 11.5,
     pitch: 32,
     bearing: -12,
-    duration: 1100,
+    duration: 0,
+    essential: false,
+  });
+  map.zoomTo(Math.min(12, map.getZoom() + zoomBoost), {
+    duration: 900,
     essential: false,
   });
 }
@@ -252,7 +385,7 @@ export function ActivityMap({
   cases: MapSelectableCase[];
   mode?: MapCaseKind;
   selectedId?: string | null;
-  onSelect?: (id: string) => void;
+  onSelect?: (id: string | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -282,7 +415,7 @@ export function ActivityMap({
       bearing: -16,
       maxPitch: 75,
       canvasContextAttributes: { antialias: true },
-      attributionControl: { compact: true },
+      attributionControl: false,
     });
 
     map.addControl(
@@ -299,18 +432,20 @@ export function ActivityMap({
         selectedRef.current,
       );
       map.resize();
-      map.easeTo({
-        center: [CITY_VIEW.longitude, CITY_VIEW.latitude],
-        zoom: CITY_VIEW.zoom,
-        pitch: CITY_VIEW.pitch,
-        bearing: CITY_VIEW.bearing,
-        duration: 900,
-      });
+      showActivityOverview(map);
     });
 
     const pick = (event: { features?: { properties?: { id?: string } }[] }) => {
       const id = event.features?.[0]?.properties?.id;
-      if (id) onSelectRef.current?.(id);
+      if (!id) return;
+
+      // A different source indicator replaces the active selection. Clear the
+      // old popup reference first so its close listener cannot clear the new
+      // selection after this event finishes.
+      const activePopup = popupRef.current;
+      popupRef.current = null;
+      activePopup?.remove();
+      onSelectRef.current?.(id);
     };
 
     map.on("click", "reports-points", pick);
@@ -339,7 +474,9 @@ export function ActivityMap({
       resizeTimers.forEach(window.clearTimeout);
       observer.disconnect();
       markerRef.current?.remove();
-      popupRef.current?.remove();
+      const activePopup = popupRef.current;
+      popupRef.current = null;
+      activePopup?.remove();
       map.remove();
       mapRef.current = null;
     };
@@ -368,16 +505,18 @@ export function ActivityMap({
 
     markerRef.current?.remove();
     markerRef.current = null;
-    popupRef.current?.remove();
+    const activePopup = popupRef.current;
     popupRef.current = null;
+    activePopup?.remove();
 
     if (!selectedId) return;
     const item = cases.find((candidate) => candidate.id === selectedId);
     if (!item) return;
 
     const showSelection = () => {
+      const pinElement = createPinElement(mode);
       const marker = new Marker({
-        element: createPinElement(mode),
+        element: pinElement,
         anchor: "center",
       })
         .setLngLat([item.longitude, item.latitude])
@@ -393,6 +532,15 @@ export function ActivityMap({
         .setDOMContent(createPopupContent(item))
         .addTo(map);
       popupRef.current = popup;
+
+      // The visual selected marker is a DOM layer above the source point.
+      // Removing it after the popup closes exposes the original indicator for
+      // the next tap and avoids competing pointer handlers.
+      popup.on("close", () => {
+        if (popupRef.current !== popup) return;
+        popupRef.current = null;
+        onSelectRef.current?.(null);
+      });
 
       map.flyTo({
         center: [item.longitude, item.latitude],
@@ -413,22 +561,9 @@ export function ActivityMap({
     else showSelection();
   }, [selectedId, cases, mode]);
 
-  function resetView() {
-    if (mapRef.current) showActivityOverview(mapRef.current);
-  }
-
   return (
-    <div className="relative h-full min-h-[360px] w-full overflow-hidden rounded-[36px] border border-cloud bg-mist">
+    <div className="swm-map-shell relative h-full min-h-[360px] w-full overflow-hidden rounded-none border-0 bg-mist">
       <div ref={containerRef} className="absolute inset-0 h-full w-full" />
-
-      <button
-        type="button"
-        onClick={resetView}
-        className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-[14px] border border-cloud bg-snow/95 px-3.5 py-2.5 text-xs font-medium text-iron shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:text-obsidian"
-      >
-        <BuildingsIcon className="size-4" />
-        Selangor overview
-      </button>
 
       <div className="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-3 rounded-[14px] border border-cloud bg-snow/95 px-3.5 py-2.5 text-[11px] text-steel shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
         {mode === "pothole" ? (
@@ -449,15 +584,15 @@ export function ActivityMap({
         ) : (
           <>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-ember" />
+              <span className="size-2 rounded-full bg-[#2563eb]" />
               New
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-graphite" />
+              <span className="size-2 rounded-full bg-[#f59e0b]" />
               Active
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full border border-graphite bg-snow" />
+              <span className="size-2 rounded-full bg-[#16a34a]" />
               Solved
             </span>
           </>

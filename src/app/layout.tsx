@@ -8,9 +8,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Selangor Waste Management | Illegal Dumping",
+  title: "Siaga Selangor | Waste & Road Watch",
   description:
-    "Citizen dashboard and reporting for illegal dumping across Selangor — report, track, and support cleaner communities.",
+    "A Selangor civic map for reporting illegal dumping and tracking road conditions.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -10,7 +10,7 @@ export function PartyPanel({
 }) {
   if (!party) {
     return (
-      <div className="rounded-[36px] border border-dashed border-mist bg-snow p-6 text-sm leading-relaxed text-fog">
+      <div className="rounded-[28px] border border-dashed border-[#d8c49f] bg-[#fff8ea]/80 p-6 text-sm leading-relaxed text-[#6e5c4b] shadow-[0_14px_34px_rgba(64,35,10,0.06)]">
         Location is needed before the responsible department can be suggested.
       </div>
     );
@@ -18,8 +18,8 @@ export function PartyPanel({
 
   return (
     <section
-      className={`rounded-[36px] border bg-snow p-6 ${
-        highlight ? "border-mist" : "border-cloud"
+      className={`rounded-[28px] border bg-[#fff8ea]/95 p-6 shadow-[0_16px_38px_rgba(64,35,10,0.08)] ${
+        highlight ? "border-[#D2222B]" : "border-[#ead9b8]"
       }`}
       aria-labelledby={`party-${party.id}`}
     >
@@ -33,32 +33,37 @@ export function PartyPanel({
             {party.department}
           </h2>
         </div>
-        <span className="grid size-10 shrink-0 place-items-center rounded-[14px] bg-obsidian text-snow">
-          <BuildingsIcon className="size-5" />
+        <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-[14px] border border-[#ead9b8] bg-white p-1 shadow-[0_8px_16px_rgba(64,35,10,0.10)]">
+          {party.logoUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={party.logoUrl} alt={`${party.department} logo`} className="max-h-full max-w-full object-contain" />
+          ) : (
+            <BuildingsIcon className="size-5 text-[#D2222B]" />
+          )}
         </span>
       </div>
 
       {highlight && (
-        <span className="mt-4 inline-flex rounded-xl bg-ember px-2.5 py-1 text-[11px] font-medium text-snow">
+        <span className="mt-4 inline-flex rounded-xl bg-[#FDB915] px-2.5 py-1 text-[11px] font-semibold text-[#4a1b0d]">
           Suggested for this location
         </span>
       )}
 
-      <dl className="mt-5 divide-y divide-cloud text-sm">
+      <dl className="mt-5 divide-y divide-[#ead9b8] text-sm">
         <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
           <dt className="text-fog">Contractor</dt>
-          <dd className="text-right text-graphite">{party.contractor}</dd>
+          <dd className="text-right text-[#3a281b]">{party.contractor}</dd>
         </div>
         <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
           <dt className="text-fog">Contact</dt>
-          <dd className="text-right text-graphite">{party.contactPerson}</dd>
+          <dd className="text-right text-[#3a281b]">{party.contactPerson}</dd>
         </div>
         <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
           <dt className="text-fog">Phone</dt>
           <dd className="text-right">
             <a
               href={`tel:${party.phone}`}
-              className="text-graphite underline decoration-mist underline-offset-4 hover:text-ember"
+              className="text-[#3a281b] underline decoration-[#d8c49f] underline-offset-4 hover:text-[#a91824]"
             >
               {party.phone}
             </a>
@@ -69,7 +74,7 @@ export function PartyPanel({
           <dd className="min-w-0 text-right">
             <a
               href={`mailto:${party.email}`}
-              className="break-all text-graphite underline decoration-mist underline-offset-4 hover:text-ember"
+              className="break-all text-[#3a281b] underline decoration-[#d8c49f] underline-offset-4 hover:text-[#a91824]"
             >
               {party.email}
             </a>
@@ -81,7 +86,7 @@ export function PartyPanel({
             {party.zoneCoverage.map((zone) => (
               <span
                 key={zone}
-                className="rounded-xl border border-cloud px-2 py-1 text-xs text-graphite"
+                className="rounded-xl border border-[#ead9b8] bg-white/60 px-2 py-1 text-xs text-[#3a281b]"
               >
                 {zone}
               </span>

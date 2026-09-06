@@ -34,12 +34,12 @@ export type ActivityMapPoint = {
 };
 
 const DUMPING_STATUS_COLOR: Record<string, string> = {
-  new: "#ff5a00",
-  under_review: "#18181b",
-  assigned: "#3f3f46",
-  in_progress: "#71717a",
-  solved: "#ffffff",
-  false_report: "#a1a1aa",
+  new: "#2563eb",
+  under_review: "#8b5cf6",
+  assigned: "#06b6d4",
+  in_progress: "#f59e0b",
+  solved: "#16a34a",
+  false_report: "#ef4444",
 };
 
 const POTHOLE_SEVERITY_COLOR: Record<string, string> = {
@@ -47,13 +47,13 @@ const POTHOLE_SEVERITY_COLOR: Record<string, string> = {
   medium: "#f59e0b",
   high: "#ea580c",
   critical: "#dc2626",
-  // status fallbacks if severity not used
-  new: "#f59e0b",
-  under_review: "#d97706",
-  assigned: "#ea580c",
-  in_progress: "#b45309",
-  solved: "#ffffff",
-  false_report: "#a1a1aa",
+  // neutral status fallbacks when a pothole has no severity color
+  new: "#2563eb",
+  under_review: "#8b5cf6",
+  assigned: "#06b6d4",
+  in_progress: "#f59e0b",
+  solved: "#16a34a",
+  false_report: "#ef4444",
 };
 
 function findBuildingSource(style: Pick<StyleSpecification, "sources" | "layers">) {
@@ -220,8 +220,8 @@ export function buildActivityMapPlan(
       "circle-stroke-color": [
         "case",
         ["==", ["get", "status"], "solved"],
-        "#18181b",
         "#ffffff",
+        "#111827",
       ],
       "circle-opacity": isPothole ? 0.35 : 0.98,
     },

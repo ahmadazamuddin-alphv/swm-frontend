@@ -132,6 +132,25 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
     }
   }
 
+  async function useSampleEvidence() {
+    setError(null);
+    setCapturing(true);
+    try {
+      const response = await fetch("/mock/reports/mixed-1.jpg");
+      if (!response.ok) throw new Error("Sample evidence could not be loaded.");
+      stopStream();
+      onCapture(await blobToDataUrl(await response.blob()));
+    } catch (caught) {
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Sample evidence could not be loaded.",
+      );
+    } finally {
+      setCapturing(false);
+    }
+  }
+
   if (error && !ready) {
     return (
       <div className="rounded-[36px] border border-mist bg-snow p-7 text-sm">
@@ -152,7 +171,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
 
   return (
     <div>
-      <div className="mb-4 flex items-start gap-3 rounded-[20px] border border-cloud bg-snow p-4">
+      <div className="mb-4 flex items-start gap-3 rounded-[20px] border border-[#ead9b8] bg-[#fff8ea]/95 p-4 shadow-[0_12px_28px_rgba(64,35,10,0.07)] backdrop-blur">
         <CameraIcon className="mt-0.5 size-5 shrink-0 text-iron" />
         <div>
           <p className="text-sm font-medium text-obsidian">
@@ -165,7 +184,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
         </div>
       </div>
 
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[36px] border border-cloud bg-obsidian">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[32px] border border-[#ead9b8] bg-obsidian shadow-[0_20px_44px_rgba(64,35,10,0.16)]">
         <video
           ref={videoRef}
           playsInline
@@ -196,10 +215,18 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
         type="button"
         disabled={!ready || disabled || capturing}
         onClick={() => void capturePhoto()}
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[14px] border border-[#2c2e34] bg-obsidian px-5 py-3.5 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45"
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[14px] bg-[#D2222B] px-5 py-3.5 text-sm font-medium text-white shadow-[0_8px_18px_rgba(210,34,43,0.24)] hover:-translate-y-0.5 hover:bg-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
       >
         <CameraIcon className="size-4" />
         {capturing ? "Capturing photo…" : "Capture photo"}
+      </button>
+      <button
+        type="button"
+        disabled={disabled || capturing}
+        onClick={() => void useSampleEvidence()}
+        className="mt-2 inline-flex w-full items-center justify-center rounded-[14px] border border-[#ead9b8] bg-[#fff8ea] px-5 py-3 text-sm font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
+      >
+        Use sample dumping evidence
       </button>
     </div>
   );

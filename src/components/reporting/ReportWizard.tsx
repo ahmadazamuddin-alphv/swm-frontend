@@ -251,12 +251,12 @@ export function ReportWizard() {
               <img
                 src={imageDataUrl}
                 alt="Captured illegal-dumping site"
-                className="aspect-[4/3] w-full rounded-[36px] border border-cloud object-cover"
+                className="aspect-[4/3] w-full rounded-[32px] border border-[#ead9b8] object-cover shadow-[0_20px_44px_rgba(64,35,10,0.14)]"
               />
 
               <button
                 type="button"
-                className="mt-4 inline-flex items-center gap-2 rounded-[14px] border border-cloud bg-snow px-4 py-2.5 text-sm font-medium text-iron hover:border-mist hover:text-obsidian"
+                className="mt-4 inline-flex items-center gap-2 rounded-[14px] border border-[#ead9b8] bg-[#fff8ea]/95 px-4 py-2.5 text-sm font-medium text-[#6e5c4b] shadow-[0_8px_18px_rgba(64,35,10,0.07)] hover:border-[#D2222B] hover:text-[#a91824]"
                 onClick={() => {
                   setStep("capture");
                   setImageDataUrl(null);
@@ -266,7 +266,7 @@ export function ReportWizard() {
                 Retake live photo
               </button>
 
-              <div className="mt-7 grid gap-5 rounded-[36px] border border-cloud bg-snow p-6 sm:grid-cols-2 sm:p-7">
+              <div className="mt-7 grid gap-5 rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 p-6 shadow-[0_16px_36px_rgba(64,35,10,0.09)] backdrop-blur sm:grid-cols-2 sm:p-7">
                 <label className="block space-y-2 text-sm">
                   <span className="flex items-center gap-2 font-medium text-obsidian">
                     Waste category

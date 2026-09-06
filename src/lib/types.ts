@@ -18,6 +18,7 @@ export type WasteCategory =
 export interface ResponsibleParty {
   id: string;
   department: string;
+  logoUrl?: string;
   contractor: string;
   contactPerson: string;
   phone: string;
