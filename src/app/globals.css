@@ -180,6 +180,19 @@ textarea:focus-visible {
   animation: swm-pin-pulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
+.swm-map-pin--pothole .swm-map-pin__dot {
+  inset: 6px;
+  border-radius: 4px;
+  background: #f59e0b;
+  transform: rotate(45deg);
+}
+
+.swm-map-pin--pothole .swm-map-pin__pulse {
+  border-color: #f59e0b;
+  border-radius: 6px;
+  transform: rotate(45deg);
+}
+
 @keyframes swm-pin-pulse {
   from {
     opacity: 0.85;

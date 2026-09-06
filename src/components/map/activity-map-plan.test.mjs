@@ -36,11 +36,13 @@ test("builds visible report and building layers in a safe draw order", () => {
         label: "Construction waste",
         area: "Shah Alam",
         selected: false,
+        kind: "dumping",
       },
     ],
   );
 
   assert.equal(plan.reportSource.type, "geojson");
+  assert.equal(plan.potholeSymbolLayer, null);
   assert.equal(plan.reportSource.data.type, "FeatureCollection");
   assert.deepEqual(plan.reportSource.data.features[0]?.geometry.coordinates, [
     101.533,

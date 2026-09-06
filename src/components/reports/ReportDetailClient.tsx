@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useMemo, useSyncExternalStore } from "react";
 import { PartyPanel } from "@/components/parties/PartyPanel";
+import { AiThinkingPanel } from "@/components/reports/AiThinkingPanel";
 import { StatusBadge } from "@/components/reports/StatusBadge";
+import { RiskPotentialPanel } from "@/components/reporting/RiskPotentialPanel";
 import { ArrowLeftIcon } from "@/components/ui/Icons";
 import {
   getDemoReportServerSnapshot,
@@ -133,8 +135,13 @@ export function ReportDetailClient({
           </dl>
         </article>
 
-        <aside>
+        <aside className="space-y-4">
           <PartyPanel party={party} />
+          <RiskPotentialPanel
+            category={report.wasteCategory}
+            wasteType={report.wasteType}
+          />
+          <AiThinkingPanel report={report} />
         </aside>
       </div>
     </main>

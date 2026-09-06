@@ -15,11 +15,12 @@ import { BuildingsIcon } from "@/components/ui/Icons";
 import {
   ACTIVITY_REPORT_SOURCE_ID,
   buildActivityMapPlan,
+  createPotholeDiamondImage,
   shouldDeferReportFocus,
+  type ActivityMapPoint,
+  type MapCaseKind,
 } from "@/components/map/activity-map-plan";
-import { WASTE_CATEGORY_LABELS } from "@/lib/mock-data";
 import { formatCoords } from "@/lib/geo";
-import type { Report } from "@/lib/types";
 
 setWorkerUrl("/maplibre-gl-worker.mjs");
 
@@ -38,45 +39,62 @@ const ACTIVITY_BOUNDS: [[number, number], [number, number]] = [
 
 const BASEMAP_STYLE = "https://tiles.openfreemap.org/styles/bright";
 
-function reportsToMapPoints(
-  reports: Report[],
+export type MapSelectableCase = {
+  id: string;
+  latitude: number;
+  longitude: number;
+  status: string;
+  /** Used for pothole severity colouring; ignored for dumping dots */
+  colorKey?: string;
+  title: string;
+  area: string;
+  subtitle?: string;
+};
+
+function toMapPoints(
+  cases: MapSelectableCase[],
+  kind: MapCaseKind,
   selectedId?: string | null,
-) {
-  return reports.map((report) => ({
-    id: report.id,
-    longitude: report.longitude,
-    latitude: report.latitude,
-    status: report.status,
-    category: report.wasteCategory,
-    label: WASTE_CATEGORY_LABELS[report.wasteCategory],
-    area: report.area,
-    selected: report.id === selectedId,
+): ActivityMapPoint[] {
+  return cases.map((item) => ({
+    id: item.id,
+    longitude: item.longitude,
+    latitude: item.latitude,
+    status: item.status,
+    category: item.colorKey ?? item.status,
+    label: item.title,
+    area: item.area,
+    selected: item.id === selectedId,
+    kind,
   }));
 }
 
-function createPinElement(): HTMLDivElement {
+function createPinElement(kind: MapCaseKind): HTMLDivElement {
   const element = document.createElement("div");
   const dot = document.createElement("span");
   const pulse = document.createElement("span");
-  element.className = "swm-map-pin";
+  element.className =
+    kind === "pothole" ? "swm-map-pin swm-map-pin--pothole" : "swm-map-pin";
   dot.className = "swm-map-pin__dot";
   pulse.className = "swm-map-pin__pulse";
   element.append(dot, pulse);
   return element;
 }
 
-function createPopupContent(report: Report): HTMLDivElement {
+function createPopupContent(item: MapSelectableCase): HTMLDivElement {
   const root = document.createElement("div");
   const title = document.createElement("p");
   const meta = document.createElement("p");
   const coords = document.createElement("code");
 
   title.className = "swm-map-popup__title";
-  title.textContent = WASTE_CATEGORY_LABELS[report.wasteCategory];
+  title.textContent = item.title;
   meta.className = "swm-map-popup__meta";
-  meta.textContent = `${report.taman ? `${report.taman}, ` : ""}${report.area}`;
+  meta.textContent = item.subtitle
+    ? `${item.subtitle} · ${item.area}`
+    : item.area;
   coords.className = "swm-map-popup__coords";
-  coords.textContent = formatCoords(report.latitude, report.longitude);
+  coords.textContent = formatCoords(item.latitude, item.longitude);
 
   root.append(title, meta, coords);
   return root;
@@ -119,14 +137,24 @@ function tuneBaseMap(map: Map) {
   }
 }
 
+function ensurePotholeIcon(map: Map) {
+  if (map.hasImage("pothole-diamond")) return;
+  const image = createPotholeDiamondImage(48);
+  map.addImage("pothole-diamond", image, { pixelRatio: 2 });
+}
+
 function installActivityLayers(
   map: Map,
-  reports: Report[],
+  cases: MapSelectableCase[],
+  mode: MapCaseKind,
   selectedId?: string | null,
 ) {
+  ensurePotholeIcon(map);
+
   const plan = buildActivityMapPlan(
     map.getStyle(),
-    reportsToMapPoints(reports, selectedId),
+    toMapPoints(cases, mode, selectedId),
+    mode,
   );
 
   const existingSource = map.getSource(
@@ -139,14 +167,56 @@ function installActivityLayers(
     map.addSource(ACTIVITY_REPORT_SOURCE_ID, plan.reportSource);
   }
 
-  if (!map.getLayer(plan.reportHeatLayer.id)) {
-    map.addLayer(plan.reportHeatLayer);
-  }
-  if (!map.getLayer(plan.reportHaloLayer.id)) {
-    map.addLayer(plan.reportHaloLayer);
-  }
-  if (!map.getLayer(plan.reportPointLayer.id)) {
-    map.addLayer(plan.reportPointLayer);
+  // Re-apply paint when switching modes
+  const syncLayer = (
+    layer:
+      | typeof plan.reportHeatLayer
+      | typeof plan.reportHaloLayer
+      | typeof plan.reportPointLayer,
+  ) => {
+    if (!map.getLayer(layer.id)) {
+      map.addLayer(layer);
+      return;
+    }
+    if (layer.paint) {
+      for (const [key, value] of Object.entries(layer.paint)) {
+        try {
+          map.setPaintProperty(
+            layer.id,
+            key as Parameters<Map["setPaintProperty"]>[1],
+            value,
+          );
+        } catch {
+          // ignore unsupported runtime paint keys
+        }
+      }
+    }
+  };
+
+  syncLayer(plan.reportHeatLayer);
+  syncLayer(plan.reportHaloLayer);
+  syncLayer(plan.reportPointLayer);
+
+  if (plan.potholeSymbolLayer) {
+    if (!map.getLayer(plan.potholeSymbolLayer.id)) {
+      map.addLayer(plan.potholeSymbolLayer);
+    } else if (plan.potholeSymbolLayer.layout) {
+      for (const [key, value] of Object.entries(
+        plan.potholeSymbolLayer.layout,
+      )) {
+        try {
+          map.setLayoutProperty(
+            plan.potholeSymbolLayer.id,
+            key as Parameters<Map["setLayoutProperty"]>[1],
+            value,
+          );
+        } catch {
+          // ignore
+        }
+      }
+    }
+  } else if (map.getLayer("pothole-symbols")) {
+    map.removeLayer("pothole-symbols");
   }
 
   if (!map.getLayer("real-buildings-3d") && plan.buildingLayer) {
@@ -174,11 +244,13 @@ function showActivityOverview(map: Map) {
 }
 
 export function ActivityMap({
-  reports,
+  cases,
+  mode = "dumping",
   selectedId,
   onSelect,
 }: {
-  reports: Report[];
+  cases: MapSelectableCase[];
+  mode?: MapCaseKind;
   selectedId?: string | null;
   onSelect?: (id: string) => void;
 }) {
@@ -187,14 +259,16 @@ export function ActivityMap({
   const markerRef = useRef<Marker | null>(null);
   const popupRef = useRef<Popup | null>(null);
   const onSelectRef = useRef(onSelect);
-  const reportsRef = useRef(reports);
+  const casesRef = useRef(cases);
   const selectedRef = useRef(selectedId);
+  const modeRef = useRef(mode);
 
   useEffect(() => {
     onSelectRef.current = onSelect;
-    reportsRef.current = reports;
+    casesRef.current = cases;
     selectedRef.current = selectedId;
-  }, [onSelect, reports, selectedId]);
+    modeRef.current = mode;
+  }, [onSelect, cases, selectedId, mode]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -220,7 +294,8 @@ export function ActivityMap({
     map.on("load", () => {
       installActivityLayers(
         map,
-        reportsRef.current,
+        casesRef.current,
+        modeRef.current,
         selectedRef.current,
       );
       map.resize();
@@ -233,15 +308,24 @@ export function ActivityMap({
       });
     });
 
-    map.on("click", "reports-points", (event) => {
-      const id = event.features?.[0]?.properties?.id as string | undefined;
+    const pick = (event: { features?: { properties?: { id?: string } }[] }) => {
+      const id = event.features?.[0]?.properties?.id;
       if (id) onSelectRef.current?.(id);
-    });
+    };
+
+    map.on("click", "reports-points", pick);
+    map.on("click", "pothole-symbols", pick);
 
     map.on("mouseenter", "reports-points", () => {
       map.getCanvas().style.cursor = "pointer";
     });
     map.on("mouseleave", "reports-points", () => {
+      map.getCanvas().style.cursor = "";
+    });
+    map.on("mouseenter", "pothole-symbols", () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+    map.on("mouseleave", "pothole-symbols", () => {
       map.getCanvas().style.cursor = "";
     });
 
@@ -266,7 +350,7 @@ export function ActivityMap({
     if (!map) return;
 
     const update = () => {
-      installActivityLayers(map, reports, selectedId);
+      installActivityLayers(map, cases, mode, selectedId);
     };
 
     const deferUntilLoad = shouldDeferReportFocus({
@@ -276,7 +360,7 @@ export function ActivityMap({
 
     if (deferUntilLoad) map.once("load", update);
     else update();
-  }, [reports, selectedId]);
+  }, [cases, mode, selectedId]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -288,15 +372,15 @@ export function ActivityMap({
     popupRef.current = null;
 
     if (!selectedId) return;
-    const report = reports.find((candidate) => candidate.id === selectedId);
-    if (!report) return;
+    const item = cases.find((candidate) => candidate.id === selectedId);
+    if (!item) return;
 
     const showSelection = () => {
       const marker = new Marker({
-        element: createPinElement(),
+        element: createPinElement(mode),
         anchor: "center",
       })
-        .setLngLat([report.longitude, report.latitude])
+        .setLngLat([item.longitude, item.latitude])
         .addTo(map);
       markerRef.current = marker;
 
@@ -305,13 +389,13 @@ export function ActivityMap({
         closeButton: false,
         className: "swm-map-popup",
       })
-        .setLngLat([report.longitude, report.latitude])
-        .setDOMContent(createPopupContent(report))
+        .setLngLat([item.longitude, item.latitude])
+        .setDOMContent(createPopupContent(item))
         .addTo(map);
       popupRef.current = popup;
 
       map.flyTo({
-        center: [report.longitude, report.latitude],
+        center: [item.longitude, item.latitude],
         zoom: 15,
         pitch: 64,
         bearing: -28,
@@ -327,7 +411,7 @@ export function ActivityMap({
 
     if (deferUntilLoad) map.once("load", showSelection);
     else showSelection();
-  }, [selectedId, reports]);
+  }, [selectedId, cases, mode]);
 
   function resetView() {
     if (mapRef.current) showActivityOverview(mapRef.current);
@@ -347,18 +431,37 @@ export function ActivityMap({
       </button>
 
       <div className="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-3 rounded-[14px] border border-cloud bg-snow/95 px-3.5 py-2.5 text-[11px] text-steel shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
-        <span className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-ember" />
-          New
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-graphite" />
-          Active
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-full border border-graphite bg-snow" />
-          Solved
-        </span>
+        {mode === "pothole" ? (
+          <>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-block size-2.5 rotate-45 bg-amber-500" />
+              Pothole
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-red-600" />
+              Critical
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="size-2 rounded-full border border-graphite bg-snow" />
+              Repaired
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-ember" />
+              New
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-graphite" />
+              Active
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="size-2 rounded-full border border-graphite bg-snow" />
+              Solved
+            </span>
+          </>
+        )}
       </div>
     </div>
   );

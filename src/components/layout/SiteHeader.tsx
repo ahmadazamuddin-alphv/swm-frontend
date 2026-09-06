@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRightIcon } from "@/components/ui/Icons";
 
-const links = [{ href: "/dashboard", label: "Activity map" }];
+const links = [
+  { href: "/dashboard", label: "Activity map" },
+];
 
 export function SiteHeader({ compact = false }: { compact?: boolean }) {
   const pathname = usePathname();

@@ -62,3 +62,31 @@ export interface PlaceInfo {
   source: "nominatim" | "local";
 }
 
+export type PotholeSeverity = "low" | "medium" | "high" | "critical";
+
+export type PotholeStatus =
+  | "new"
+  | "under_review"
+  | "assigned"
+  | "in_progress"
+  | "solved"
+  | "false_report";
+
+export interface PotholeCase {
+  id: string;
+  latitude: number;
+  longitude: number;
+  severity: PotholeSeverity;
+  status: PotholeStatus;
+  title: string;
+  description: string;
+  imageUrl: string;
+  submittedAt: string;
+  solvedAt?: string;
+  responsiblePartyId: string;
+  area: string;
+  postcode: string;
+  roadName: string;
+  depthCm?: number;
+  notes?: string;
+}
