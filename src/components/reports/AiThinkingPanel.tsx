@@ -8,7 +8,7 @@ export function AiThinkingPanel({ report }: { report: Report }) {
   const insight = buildAiInsight(report);
 
   return (
-    <section className="rounded-[28px] border border-[#ead9b8] bg-[#fff8ea]/95 p-5 shadow-[0_16px_38px_rgba(64,35,10,0.08)]">
+    <section className="rounded-[14px] border border-[#e4e4e7] bg-[#ffffff]/95 p-5 shadow-[0_16px_38px_rgba(9,9,11,0.08)]">
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-fog">
@@ -31,7 +31,7 @@ export function AiThinkingPanel({ report }: { report: Report }) {
         {insight.alternateCategories.map((alt) => (
           <span
             key={alt.category}
-            className="rounded-lg border border-[#ead9b8] bg-white/60 px-2 py-1 text-[10px] text-[#6e5c4b]"
+            className="rounded-lg border border-[#e4e4e7] bg-white/60 px-2 py-1 text-[10px] text-[#6e5c4b]"
           >
             {WASTE_CATEGORY_LABELS[alt.category]}{" "}
             <span className="tabular-nums text-graphite">

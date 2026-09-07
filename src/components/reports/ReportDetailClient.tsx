@@ -46,7 +46,7 @@ export function ReportDetailClient({
         </p>
         <Link
           href="/dashboard"
-          className="mx-auto mt-7 inline-flex items-center gap-2 rounded-[14px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow"
+          className="mx-auto mt-7 inline-flex items-center gap-2 rounded-[7px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow"
         >
           <ArrowLeftIcon className="size-4" />
           Return to activity map
@@ -69,7 +69,7 @@ export function ReportDetailClient({
   const isLocal = report.id.startsWith("rpt-demo-");
 
   return (
-    <main className="relative isolate w-full flex-1 overflow-hidden bg-[#f8f1e5] px-5 pb-16 pt-28 sm:px-8 sm:pt-32">
+    <main className="relative isolate w-full flex-1 overflow-hidden bg-[#ffffff] px-5 pb-16 pt-28 sm:px-8 sm:pt-32">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -78,13 +78,13 @@ export function ReportDetailClient({
           className="absolute inset-0 bg-cover bg-[position:48%_center] sm:bg-center"
           style={{ backgroundImage: "url('/brand/selangor-mosque.jpg')" }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(248,241,229,0.90)_0%,rgba(248,241,229,0.60)_30%,rgba(248,241,229,0.50)_55%,#f8f1e5_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.90)_0%,rgba(255,255,255,0.60)_30%,rgba(255,255,255,0.50)_55%,#ffffff_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_12%,rgba(253,185,21,0.28),transparent_55%),radial-gradient(ellipse_at_90%_30%,rgba(210,34,43,0.18),transparent_55%)]" />
       </div>
       <div className="mx-auto w-full max-w-[1280px]">
       <Link
         href="/dashboard"
-        className="inline-flex items-center gap-2 rounded-[14px] border border-[#ead9b8] bg-[#fff8ea]/90 px-4 py-2.5 text-sm font-medium text-[#6e5c4b] shadow-[0_8px_20px_rgba(64,35,10,0.06)] backdrop-blur hover:border-[#D2222B] hover:text-[#a91824]"
+        className="inline-flex items-center gap-2 rounded-[7px] border border-[#e4e4e7] bg-[#ffffff]/90 px-4 py-2.5 text-sm font-medium text-[#6e5c4b] shadow-[0_8px_20px_rgba(9,9,11,0.06)] backdrop-blur hover:border-[#D2222B] hover:text-[#a91824]"
       >
         <ArrowLeftIcon className="size-4" />
         Back to activity map
@@ -99,13 +99,13 @@ export function ReportDetailClient({
             Review the evidence and response route for this case.
           </p>
         </div>
-        <span className="rounded-full border border-[#ead9b8] bg-[#fff8ea]/75 px-3 py-1.5 text-xs text-[#6e5c4b]">
+        <span className="rounded-full border border-[#e4e4e7] bg-[#ffffff]/75 px-3 py-1.5 text-xs text-[#6e5c4b]">
           {report.area}
         </span>
       </div>
 
       <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(320px,0.7fr)]">
-        <article className="overflow-hidden rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_20px_50px_rgba(64,35,10,0.1)]">
+        <article className="overflow-hidden rounded-[16px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_20px_50px_rgba(9,9,11,0.1)]">
           <div className="relative p-6 sm:p-9">
             <span className="absolute inset-y-0 left-0 w-1.5 bg-[#D2222B]" />
             <div className="flex flex-wrap items-center gap-2">
@@ -115,7 +115,7 @@ export function ReportDetailClient({
                   Local POC report
                 </span>
               )}
-              <span className="tabular-nums ml-auto rounded-full border border-[#ead9b8] bg-white/70 px-2.5 py-1 text-xs text-[#6e5c4b]">
+              <span className="tabular-nums ml-auto rounded-full border border-[#e4e4e7] bg-white/70 px-2.5 py-1 text-xs text-[#6e5c4b]">
                 {report.id}
               </span>
             </div>
@@ -125,7 +125,7 @@ export function ReportDetailClient({
             <p className="mt-3 text-base text-[#6e5c4b]">{report.wasteType}</p>
           </div>
 
-          <div className="relative overflow-hidden border-y border-[#ead9b8] bg-[#17100b]">
+          <div className="relative overflow-hidden border-y border-[#e4e4e7] bg-[#17100b]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={report.imageUrl}
@@ -137,7 +137,7 @@ export function ReportDetailClient({
             </span>
           </div>
 
-          <dl className="grid gap-px bg-[#ead9b8] sm:grid-cols-2">
+          <dl className="grid gap-px bg-[#e4e4e7] sm:grid-cols-2">
             {[
               {
                 label: "Area",
@@ -157,7 +157,7 @@ export function ReportDetailClient({
                 ? [{ label: "Site notes", value: report.notes }]
                 : []),
             ].map((item) => (
-              <div key={item.label} className="bg-[#fff8ea] p-5 sm:p-6">
+              <div key={item.label} className="bg-[#ffffff] p-5 sm:p-6">
                 <dt className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8f7b67]">
                   {item.label}
                 </dt>

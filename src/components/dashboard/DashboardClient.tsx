@@ -38,7 +38,7 @@ const ActivityMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[36px] border border-cloud bg-snow text-sm text-fog">
+      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-cloud bg-snow text-sm text-fog">
         Building 3D city view…
       </div>
     ),
@@ -222,36 +222,36 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
     mode === "dumping" ? filteredReports.length : filteredPotholes.length;
 
   return (
-    <main className="relative min-h-[100dvh] w-full overflow-hidden bg-[#f8f1e5] px-3 pb-3 pt-20 sm:px-5 sm:pb-5 sm:pt-24">
+    <main className="relative min-h-[100dvh] w-full overflow-hidden bg-[#ffffff] px-3 pb-3 pt-20 sm:px-5 sm:pb-5 sm:pt-24">
       {headingCollapsed ? (
         <button
           type="button"
           onClick={() => setHeadingCollapsed(false)}
-          className="absolute left-4 top-28 z-20 inline-flex items-center gap-2 rounded-full border border-[#ead9b8] bg-[#fff8ea]/95 px-4 py-2.5 text-xs font-semibold text-[#a91824] shadow-[0_10px_22px_rgba(64,35,10,0.14)] backdrop-blur-md hover:bg-white sm:left-6 sm:top-32"
+          className="absolute left-4 top-28 z-20 inline-flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-[#ffffff]/95 px-4 py-2.5 text-xs font-semibold text-[#a91824] shadow-[0_10px_22px_rgba(9,9,11,0.14)] backdrop-blur-md hover:bg-white sm:left-6 sm:top-32"
         >
           <span className="text-base leading-none">+</span>
           Show overview
         </button>
       ) : (
-      <div className="swm-dashboard-heading absolute left-4 right-4 top-28 z-20 w-auto rounded-[24px] border border-[#ead9b8]/90 bg-[#fff8ea]/90 p-3 shadow-[0_16px_38px_rgba(64,35,10,0.12)] backdrop-blur-md sm:left-6 sm:right-auto sm:top-32 sm:w-[min(610px,calc(100vw-3rem))] sm:p-4">
+      <div className="swm-dashboard-heading absolute left-4 right-4 top-28 z-20 w-auto rounded-[12px] border border-[#e4e4e7]/90 bg-[#ffffff]/90 p-3 shadow-[0_16px_38px_rgba(9,9,11,0.12)] backdrop-blur-md sm:left-6 sm:right-auto sm:top-32 sm:w-[min(610px,calc(100vw-3rem))] sm:p-4">
         <button
           type="button"
           onClick={() => setHeadingCollapsed(true)}
           aria-label="Hide map overview"
           title="Hide overview"
-          className="absolute -right-2 -top-2 grid size-8 place-items-center rounded-full border border-[#ead9b8] bg-white text-lg leading-none text-[#6e5c4b] shadow-[0_6px_14px_rgba(64,35,10,0.14)] hover:border-[#D2222B] hover:text-[#a91824]"
+          className="absolute -right-2 -top-2 grid size-8 place-items-center rounded-full border border-[#e4e4e7] bg-white text-lg leading-none text-[#6e5c4b] shadow-[0_6px_14px_rgba(9,9,11,0.14)] hover:border-[#D2222B] hover:text-[#a91824]"
         >
           −
         </button>
         <div className="flex items-start justify-between gap-3">
-          <div className="inline-flex rounded-[14px] border border-[#ead9b8] bg-white/70 p-1">
+          <div className="inline-flex rounded-[7px] border border-[#e4e4e7] bg-white/70 p-1">
             <button
               type="button"
               onClick={() => switchMode("dumping")}
-              className={`rounded-[12px] px-3.5 py-2 text-xs font-medium transition ${
+              className={`rounded-[6px] px-3.5 py-2 text-xs font-medium transition ${
                 mode === "dumping"
                   ? "bg-[#f8d8d4] text-[#a91824] shadow-[0_4px_12px_rgba(210,34,43,0.12)] ring-1 ring-[#e9aaa4]"
-                  : "text-[#6e5c4b] hover:bg-[#ffedbd] hover:text-[#8f1822]"
+                  : "text-[#6e5c4b] hover:bg-[#f4f4f5] hover:text-[#8f1822]"
               }`}
             >
               Illegal dumping
@@ -259,10 +259,10 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
             <button
               type="button"
               onClick={() => switchMode("pothole")}
-              className={`rounded-[12px] px-3.5 py-2 text-xs font-medium transition ${
+              className={`rounded-[6px] px-3.5 py-2 text-xs font-medium transition ${
                 mode === "pothole"
                   ? "bg-[#f8d8d4] text-[#a91824] shadow-[0_4px_12px_rgba(210,34,43,0.12)] ring-1 ring-[#e9aaa4]"
-                  : "text-[#6e5c4b] hover:bg-[#ffedbd] hover:text-[#8f1822]"
+                  : "text-[#6e5c4b] hover:bg-[#f4f4f5] hover:text-[#8f1822]"
               }`}
             >
               Potholes
@@ -285,7 +285,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
             <button
               type="button"
               onClick={resetDemo}
-              className="inline-flex items-center gap-2 rounded-[14px] border border-[#ead9b8] bg-white/80 px-3 py-2 text-xs font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#8f1822]"
+              className="inline-flex items-center gap-2 rounded-[7px] border border-[#e4e4e7] bg-white/80 px-3 py-2 text-xs font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#8f1822]"
             >
               <RotateCcwIcon className="size-4" />
               <span className="hidden sm:inline">Reset demo</span>
@@ -301,7 +301,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
         </h1>
         <p className="mt-2 inline-flex items-center gap-2 text-xs text-fog">
           <span
-            className={`size-1.5 rounded-[3px] ${
+            className={`size-1.5 rounded-[2px] ${
               mode === "pothole" ? "bg-[#FDB915]" : "bg-[#D2222B]"
             }`}
           />
@@ -309,7 +309,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
             ? "Citizen activity · illustrative POC data"
             : "Road defects · diamond markers on the same map"}
         </p>
-        <div className="mt-5 border-t border-[#ead9b8] pt-4">
+        <div className="mt-5 border-t border-[#e4e4e7] pt-4">
           {mode === "dumping" ? (
             <ReportFilters
               value={filters}
@@ -322,7 +322,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
               <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
                 Severity
                 <select
-                  className="rounded-[12px] border border-[#ead9b8] bg-[#fff8ea]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(64,35,10,0.08)] outline-none focus:border-[#D2222B]"
+                  className="rounded-[6px] border border-[#e4e4e7] bg-[#ffffff]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(9,9,11,0.08)] outline-none focus:border-[#D2222B]"
                   value={potholeSeverity}
                   onChange={(e) =>
                     setPotholeSeverity(
@@ -343,7 +343,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
               <label className="flex min-w-[7.5rem] flex-1 flex-col gap-0.5 text-[10px] font-medium uppercase tracking-wider text-fog">
                 Area
                 <select
-                  className="rounded-[12px] border border-[#ead9b8] bg-[#fff8ea]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(64,35,10,0.08)] outline-none focus:border-[#D2222B]"
+                  className="rounded-[6px] border border-[#e4e4e7] bg-[#ffffff]/95 px-2.5 py-1.5 text-xs text-[#3a281b] shadow-[0_8px_18px_rgba(9,9,11,0.08)] outline-none focus:border-[#D2222B]"
                   value={potholeArea}
                   onChange={(e) => setPotholeArea(e.target.value)}
                 >
@@ -380,14 +380,14 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
         <aside
           className={
             reportsMinimized
-              ? "absolute bottom-20 right-3 z-20 flex w-auto max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-[18px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_16px_38px_rgba(64,35,10,0.16)] backdrop-blur-md lg:bottom-14 lg:right-5"
-              : "absolute bottom-3 left-3 right-3 z-20 flex max-h-[43dvh] flex-col overflow-hidden rounded-[28px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_16px_38px_rgba(64,35,10,0.16)] backdrop-blur-md lg:bottom-5 lg:left-auto lg:right-5 lg:top-28 lg:w-[360px] lg:max-h-[calc(100dvh-9rem)]"
+              ? "absolute bottom-20 right-3 z-20 flex w-auto max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-[9px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_16px_38px_rgba(9,9,11,0.16)] backdrop-blur-md lg:bottom-14 lg:right-5"
+              : "absolute bottom-3 left-3 right-3 z-20 flex max-h-[43dvh] flex-col overflow-hidden rounded-[14px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_16px_38px_rgba(9,9,11,0.16)] backdrop-blur-md lg:bottom-5 lg:left-auto lg:right-5 lg:top-28 lg:w-[360px] lg:max-h-[calc(100dvh-9rem)]"
           }
         >
           <div
             className={`flex shrink-0 items-center justify-between gap-3 ${
               reportsMinimized
-                ? "cursor-pointer px-3 py-2 transition-colors hover:bg-[#fff1dc]"
+                ? "cursor-pointer px-3 py-2 transition-colors hover:bg-[#f4f4f5]"
                 : "border-b border-cloud px-5 py-4"
             }`}
             onClick={
@@ -431,7 +431,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                 <button
                   type="button"
                   onClick={() => setSelectedId(null)}
-                  className="rounded-[12px] border border-cloud px-2.5 py-1.5 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
+                  className="rounded-[6px] border border-cloud px-2.5 py-1.5 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
                 >
                   Back
                 </button>
@@ -441,7 +441,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
               {reportsMinimized ? (
                 <span
                   aria-hidden="true"
-                  className="grid size-7 place-items-center rounded-[10px] border border-[#ead9b8] bg-white/70 text-lg leading-none text-[#6e5c4b]"
+                  className="grid size-7 place-items-center rounded-[5px] border border-[#e4e4e7] bg-white/70 text-lg leading-none text-[#6e5c4b]"
                 >
                   +
                 </span>
@@ -450,7 +450,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                   type="button"
                   aria-label="Minimize reports"
                   onClick={() => setReportsMinimized(true)}
-                  className="grid size-7 place-items-center rounded-[10px] border border-[#ead9b8] bg-white/70 text-lg leading-none text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824]"
+                  className="grid size-7 place-items-center rounded-[5px] border border-[#e4e4e7] bg-white/70 text-lg leading-none text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824]"
                 >
                   <span aria-hidden="true">−</span>
                 </button>
@@ -475,7 +475,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                   <button
                     type="button"
                     onClick={() => setShowAllMobile((current) => !current)}
-                    className="mb-3 w-full rounded-[14px] border border-cloud bg-paper px-4 py-3 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
+                    className="mb-3 w-full rounded-[7px] border border-cloud bg-paper px-4 py-3 text-xs font-medium text-iron hover:border-mist hover:text-obsidian"
                   >
                     {showAllMobile
                       ? "Show fewer reports"
@@ -505,7 +505,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                       <img
                         src={selectedPothole.imageUrl}
                         alt=""
-                        className="h-16 w-20 shrink-0 rounded-[16px] object-cover"
+                        className="h-16 w-20 shrink-0 rounded-[8px] object-cover"
                       />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap gap-1.5">
@@ -523,7 +523,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                       </div>
                     </div>
 
-                    <div className="rounded-[20px] border border-cloud bg-paper/80 p-3.5">
+                    <div className="rounded-[10px] border border-cloud bg-paper/80 p-3.5">
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-fog">
@@ -565,7 +565,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                       {insight.factors[0]?.detail ?? insight.summary}
                     </p>
 
-                    <p className="rounded-[16px] border border-cloud px-3 py-2.5 text-[11px] leading-snug text-steel">
+                    <p className="rounded-[8px] border border-cloud px-3 py-2.5 text-[11px] leading-snug text-steel">
                       <span className="font-medium text-obsidian">Suggest: </span>
                       {insight.recommendation}
                     </p>
@@ -629,7 +629,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
       {mode === "dumping" && (
         <Link
           href="/report"
-          className="swm-report-fab fixed bottom-2 right-3 z-10 inline-flex items-center gap-2 rounded-[18px] bg-[#D2222B] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(210,34,43,0.3)] hover:-translate-y-1 hover:bg-[#a91824] sm:bottom-7 sm:left-1/2 sm:right-auto sm:z-30 sm:-translate-x-1/2 sm:px-6"
+          className="swm-report-fab fixed bottom-2 right-3 z-10 inline-flex items-center gap-2 rounded-[9px] bg-[#D2222B] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(210,34,43,0.3)] hover:-translate-y-1 hover:bg-[#a91824] sm:bottom-7 sm:left-1/2 sm:right-auto sm:z-30 sm:-translate-x-1/2 sm:px-6"
         >
           <span className="grid size-6 place-items-center rounded-full bg-[#FDB915] text-[#4a1b0d] text-lg leading-none">
             +

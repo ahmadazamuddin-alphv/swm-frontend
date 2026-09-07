@@ -39,7 +39,7 @@ export function SolvedFeed({ reports }: { reports: Report[] }) {
             <img
               src={report.imageUrl}
               alt=""
-              className="h-16 w-20 shrink-0 rounded-[14px] object-cover"
+              className="h-16 w-20 shrink-0 rounded-[7px] object-cover"
             />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-obsidian">

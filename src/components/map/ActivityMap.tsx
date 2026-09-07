@@ -565,7 +565,7 @@ export function ActivityMap({
     <div className="swm-map-shell relative h-full min-h-[360px] w-full overflow-hidden rounded-none border-0 bg-mist">
       <div ref={containerRef} className="absolute inset-0 h-full w-full" />
 
-      <div className="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-3 rounded-[14px] border border-cloud bg-snow/95 px-3.5 py-2.5 text-[11px] text-steel shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+      <div className="pointer-events-none absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-3 rounded-[7px] border border-cloud bg-snow/95 px-3.5 py-2.5 text-[11px] text-steel shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
         {mode === "pothole" ? (
           <>
             <span className="inline-flex items-center gap-1.5">

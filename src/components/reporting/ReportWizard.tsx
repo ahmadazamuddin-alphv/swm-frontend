@@ -164,9 +164,9 @@ export function ReportWizard() {
 
   if (step === "done" && submittedId) {
     return (
-      <section className="grid overflow-hidden rounded-[36px] bg-graphite text-snow lg:grid-cols-[1.25fr_0.75fr]">
+      <section className="grid overflow-hidden rounded-[18px] bg-graphite text-snow lg:grid-cols-[1.25fr_0.75fr]">
         <div className="p-8 sm:p-12 lg:p-16">
-          <span className="grid size-12 place-items-center rounded-[14px] bg-ember text-snow">
+          <span className="grid size-12 place-items-center rounded-[7px] bg-ember text-snow">
             <CheckIcon className="size-6" />
           </span>
           <h1 className="text-balance mt-8 max-w-[680px] text-4xl font-semibold leading-[1.06] tracking-[-0.03em] sm:text-5xl">
@@ -180,14 +180,14 @@ export function ReportWizard() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 rounded-[14px] bg-snow px-5 py-3 text-sm font-medium text-graphite hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-[7px] bg-snow px-5 py-3 text-sm font-medium text-graphite hover:-translate-y-0.5"
             >
               View it on the map
               <ArrowRightIcon className="size-4" />
             </Link>
             <button
               type="button"
-              className="rounded-[14px] border border-iron px-5 py-3 text-sm font-medium text-snow hover:border-steel hover:bg-slate"
+              className="rounded-[7px] border border-iron px-5 py-3 text-sm font-medium text-snow hover:border-steel hover:bg-slate"
               onClick={() => {
                 setStep("capture");
                 setImageDataUrl(null);
@@ -251,12 +251,12 @@ export function ReportWizard() {
               <img
                 src={imageDataUrl}
                 alt="Captured illegal-dumping site"
-                className="aspect-[4/3] w-full rounded-[32px] border border-[#ead9b8] object-cover shadow-[0_20px_44px_rgba(64,35,10,0.14)]"
+                className="aspect-[4/3] w-full rounded-[16px] border border-[#e4e4e7] object-cover shadow-[0_20px_44px_rgba(9,9,11,0.14)]"
               />
 
               <button
                 type="button"
-                className="mt-4 inline-flex items-center gap-2 rounded-[14px] border border-[#ead9b8] bg-[#fff8ea]/95 px-4 py-2.5 text-sm font-medium text-[#6e5c4b] shadow-[0_8px_18px_rgba(64,35,10,0.07)] hover:border-[#D2222B] hover:text-[#a91824]"
+                className="mt-4 inline-flex items-center gap-2 rounded-[7px] border border-[#e4e4e7] bg-[#ffffff]/95 px-4 py-2.5 text-sm font-medium text-[#6e5c4b] shadow-[0_8px_18px_rgba(9,9,11,0.07)] hover:border-[#D2222B] hover:text-[#a91824]"
                 onClick={() => {
                   setStep("capture");
                   setImageDataUrl(null);
@@ -266,7 +266,7 @@ export function ReportWizard() {
                 Retake live photo
               </button>
 
-              <div className="mt-7 grid gap-5 rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 p-6 shadow-[0_16px_36px_rgba(64,35,10,0.09)] backdrop-blur sm:grid-cols-2 sm:p-7">
+              <div className="mt-7 grid gap-5 rounded-[16px] border border-[#e4e4e7] bg-[#ffffff]/95 p-6 shadow-[0_16px_36px_rgba(9,9,11,0.09)] backdrop-blur sm:grid-cols-2 sm:p-7">
                 <label className="block space-y-2 text-sm">
                   <span className="flex items-center gap-2 font-medium text-obsidian">
                     Waste category
@@ -275,7 +275,7 @@ export function ReportWizard() {
                     </span>
                   </span>
                   <select
-                    className="h-11 w-full rounded-[14px] border border-cloud bg-snow px-3 text-graphite outline-none hover:border-mist disabled:opacity-50"
+                    className="h-11 w-full rounded-[7px] border border-cloud bg-snow px-3 text-graphite outline-none hover:border-mist disabled:opacity-50"
                     value={wasteCategory}
                     disabled={classifying}
                     onChange={(event) =>
@@ -295,7 +295,7 @@ export function ReportWizard() {
                     Waste description
                   </span>
                   <input
-                    className="h-11 w-full rounded-[14px] border border-cloud bg-snow px-3 text-graphite outline-none placeholder:text-ash hover:border-mist disabled:opacity-50"
+                    className="h-11 w-full rounded-[7px] border border-cloud bg-snow px-3 text-graphite outline-none placeholder:text-ash hover:border-mist disabled:opacity-50"
                     value={wasteType}
                     disabled={classifying}
                     onChange={(event) => setWasteType(event.target.value)}
@@ -312,7 +312,7 @@ export function ReportWizard() {
                     Site notes <span className="font-normal text-fog">optional</span>
                   </span>
                   <textarea
-                    className="min-h-[104px] w-full resize-y rounded-[14px] border border-cloud bg-snow px-3 py-3 text-graphite outline-none placeholder:text-ash hover:border-mist"
+                    className="min-h-[104px] w-full resize-y rounded-[7px] border border-cloud bg-snow px-3 py-3 text-graphite outline-none placeholder:text-ash hover:border-mist"
                     value={notes}
                     onChange={(event) => setNotes(event.target.value)}
                     placeholder="Add a landmark or access note"
@@ -332,7 +332,7 @@ export function ReportWizard() {
                   type="button"
                   disabled={submitting || classifying || !party}
                   onClick={() => void handleSubmit()}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-[14px] border border-[#2c2e34] bg-obsidian px-5 py-3.5 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45 sm:col-span-2"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-[7px] border border-[#2c2e34] bg-obsidian px-5 py-3.5 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45 sm:col-span-2"
                 >
                   {submitting ? "Saving report…" : "Add report to activity map"}
                   {!submitting && <ArrowRightIcon className="size-4" />}
@@ -344,7 +344,7 @@ export function ReportWizard() {
       </section>
 
       <aside className="space-y-4 lg:pt-[76px]">
-        <section className="rounded-[36px] border border-cloud bg-snow p-6">
+        <section className="rounded-[18px] border border-cloud bg-snow p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-medium text-fog">Site location</p>
@@ -358,7 +358,7 @@ export function ReportWizard() {
                       : (place?.city ?? "Coordinates ready")}
               </h2>
             </div>
-            <span className="grid size-10 shrink-0 place-items-center rounded-[14px] bg-obsidian text-snow">
+            <span className="grid size-10 shrink-0 place-items-center rounded-[7px] bg-obsidian text-snow">
               <CrosshairIcon className="size-5" />
             </span>
           </div>
@@ -392,7 +392,7 @@ export function ReportWizard() {
               <button
                 type="button"
                 onClick={() => void applyDemoLocation()}
-                className="mt-4 w-full rounded-[14px] border border-cloud bg-paper px-4 py-2.5 text-sm font-medium text-graphite hover:border-mist hover:bg-snow"
+                className="mt-4 w-full rounded-[7px] border border-cloud bg-paper px-4 py-2.5 text-sm font-medium text-graphite hover:border-mist hover:bg-snow"
               >
                 Use Shah Alam demo location
               </button>

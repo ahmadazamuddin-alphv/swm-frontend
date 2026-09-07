@@ -43,7 +43,7 @@ export function ImpactGallery() {
   }
 
   return (
-    <section className="mt-8 overflow-hidden rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_18px_42px_rgba(64,35,10,0.10)] backdrop-blur sm:mt-12">
+    <section className="mt-8 overflow-hidden rounded-[16px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_18px_42px_rgba(9,9,11,0.10)] backdrop-blur sm:mt-12">
       <div className="grid lg:grid-cols-[1.18fr_0.82fr]">
         <div className="relative min-h-[300px] overflow-hidden bg-[#17100b] sm:min-h-[420px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -54,7 +54,7 @@ export function ImpactGallery() {
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#17100b]/80 via-transparent to-[#17100b]/10" />
-          <span className="absolute left-5 top-5 rounded-full bg-[#fff8ea]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a91824]">
+          <span className="absolute left-5 top-5 rounded-full bg-[#ffffff]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a91824]">
             Selangor field notes
           </span>
           <p className="absolute bottom-5 left-5 right-5 text-xs text-white/80">
@@ -82,12 +82,12 @@ export function ImpactGallery() {
                   aria-label={`Show gallery slide ${index + 1}`}
                   aria-current={index === active ? "true" : undefined}
                   onClick={() => setActive(index)}
-                  className={`h-2 rounded-full transition-all ${index === active ? "w-8 bg-[#D2222B]" : "w-2 bg-[#d8c49f] hover:bg-[#FDB915]"}`}
+                  className={`h-2 rounded-full transition-all ${index === active ? "w-8 bg-[#D2222B]" : "w-2 bg-[#d4d4d8] hover:bg-[#FDB915]"}`}
                 />
               ))}
             </div>
             <div className="flex gap-2">
-              <button type="button" aria-label="Previous gallery slide" onClick={() => move(-1)} className="grid size-10 place-items-center rounded-full border border-[#ead9b8] bg-white text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824]">
+              <button type="button" aria-label="Previous gallery slide" onClick={() => move(-1)} className="grid size-10 place-items-center rounded-full border border-[#e4e4e7] bg-white text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824]">
                 <ArrowLeftIcon className="size-4" />
               </button>
               <button type="button" aria-label="Next gallery slide" onClick={() => move(1)} className="grid size-10 place-items-center rounded-full bg-[#D2222B] text-white shadow-[0_7px_16px_rgba(210,34,43,0.22)] hover:bg-[#a91824]">

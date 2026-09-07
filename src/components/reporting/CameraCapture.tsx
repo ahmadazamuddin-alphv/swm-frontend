@@ -153,8 +153,8 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
 
   if (error && !ready) {
     return (
-      <div className="rounded-[36px] border border-mist bg-snow p-7 text-sm">
-        <div className="grid size-11 place-items-center rounded-[14px] bg-obsidian text-snow">
+      <div className="rounded-[18px] border border-mist bg-snow p-7 text-sm">
+        <div className="grid size-11 place-items-center rounded-[7px] bg-obsidian text-snow">
           <CameraIcon className="size-5" />
         </div>
         <h2 className="mt-5 text-lg font-semibold text-obsidian">
@@ -171,7 +171,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
 
   return (
     <div>
-      <div className="mb-4 flex items-start gap-3 rounded-[20px] border border-[#ead9b8] bg-[#fff8ea]/95 p-4 shadow-[0_12px_28px_rgba(64,35,10,0.07)] backdrop-blur">
+      <div className="mb-4 flex items-start gap-3 rounded-[10px] border border-[#e4e4e7] bg-[#ffffff]/95 p-4 shadow-[0_12px_28px_rgba(9,9,11,0.07)] backdrop-blur">
         <CameraIcon className="mt-0.5 size-5 shrink-0 text-iron" />
         <div>
           <p className="text-sm font-medium text-obsidian">
@@ -184,7 +184,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
         </div>
       </div>
 
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[32px] border border-[#ead9b8] bg-obsidian shadow-[0_20px_44px_rgba(64,35,10,0.16)]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[16px] border border-[#e4e4e7] bg-obsidian shadow-[0_20px_44px_rgba(9,9,11,0.16)]">
         <video
           ref={videoRef}
           playsInline
@@ -199,7 +199,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
             Opening live camera…
           </div>
         )}
-        <div className="pointer-events-none absolute inset-[12%] rounded-[24px] border border-snow/75" />
+        <div className="pointer-events-none absolute inset-[12%] rounded-[12px] border border-snow/75" />
         <div className="pointer-events-none absolute left-4 top-4 rounded-xl bg-obsidian/80 px-3 py-1.5 text-[11px] font-medium text-snow">
           Live camera
         </div>
@@ -215,7 +215,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
         type="button"
         disabled={!ready || disabled || capturing}
         onClick={() => void capturePhoto()}
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[14px] bg-[#D2222B] px-5 py-3.5 text-sm font-medium text-white shadow-[0_8px_18px_rgba(210,34,43,0.24)] hover:-translate-y-0.5 hover:bg-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[7px] bg-[#D2222B] px-5 py-3.5 text-sm font-medium text-white shadow-[0_8px_18px_rgba(210,34,43,0.24)] hover:-translate-y-0.5 hover:bg-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
       >
         <CameraIcon className="size-4" />
         {capturing ? "Capturing photo…" : "Capture photo"}
@@ -224,7 +224,7 @@ export function CameraCapture({ onCapture, disabled }: CameraCaptureProps) {
         type="button"
         disabled={disabled || capturing}
         onClick={() => void useSampleEvidence()}
-        className="mt-2 inline-flex w-full items-center justify-center rounded-[14px] border border-[#ead9b8] bg-[#fff8ea] px-5 py-3 text-sm font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
+        className="mt-2 inline-flex w-full items-center justify-center rounded-[7px] border border-[#e4e4e7] bg-[#ffffff] px-5 py-3 text-sm font-medium text-[#6e5c4b] hover:border-[#D2222B] hover:text-[#a91824] disabled:cursor-not-allowed disabled:opacity-45"
       >
         Use sample dumping evidence
       </button>

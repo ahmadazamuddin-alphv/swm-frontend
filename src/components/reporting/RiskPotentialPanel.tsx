@@ -10,7 +10,7 @@ import type { WasteCategory } from "@/lib/types";
 const LEVEL_STYLES = {
   high: "bg-[#D2222B] text-white",
   medium: "bg-[#FDB915] text-[#4a1b0d]",
-  low: "border border-[#ead9b8] bg-white text-[#3a281b]",
+  low: "border border-[#e4e4e7] bg-white text-[#3a281b]",
 } as const;
 
 export function RiskPotentialPanel({
@@ -26,7 +26,7 @@ export function RiskPotentialPanel({
   const peak = highestRiskLevel(risks);
 
   return (
-    <section className="rounded-[28px] border border-[#ead9b8] bg-[#fff8ea]/95 p-6 shadow-[0_16px_38px_rgba(64,35,10,0.08)]">
+    <section className="rounded-[14px] border border-[#e4e4e7] bg-[#ffffff]/95 p-6 shadow-[0_16px_38px_rgba(9,9,11,0.08)]">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-medium text-fog">Risk potential</p>
@@ -46,7 +46,7 @@ export function RiskPotentialPanel({
           Estimating risks from the suggested category…
         </p>
       ) : (
-        <ul className="mt-5 divide-y divide-[#ead9b8]">
+        <ul className="mt-5 divide-y divide-[#e4e4e7]">
           {risks.map((risk) => (
             <li key={risk.id} className="py-3 first:pt-0 last:pb-0">
               <div className="flex items-center justify-between gap-3">

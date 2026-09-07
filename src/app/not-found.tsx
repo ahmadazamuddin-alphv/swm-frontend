@@ -14,7 +14,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/dashboard"
-          className="mt-6 inline-flex justify-center rounded-[14px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow"
+          className="mt-6 inline-flex justify-center rounded-[7px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow"
         >
           Back to dashboard
         </Link>
