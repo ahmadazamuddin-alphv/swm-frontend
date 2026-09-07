@@ -9,7 +9,7 @@ import type { WasteCategory } from "@/lib/types";
 
 const LEVEL_STYLES = {
   high: "bg-[#D2222B] text-white",
-  medium: "bg-[#FDB915] text-[#4a1b0d]",
+  medium: "bg-[#D2222B] text-white",
   low: "border border-[#e4e4e7] bg-white text-[#3a281b]",
 } as const;
 

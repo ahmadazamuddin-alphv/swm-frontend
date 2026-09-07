@@ -111,7 +111,7 @@ export function ReportDetailClient({
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status={report.status} />
               {isLocal && (
-                <span className="rounded-xl bg-[#FDB915] px-2 py-0.5 text-[10px] font-semibold text-[#4a1b0d]">
+                <span className="rounded-xl bg-[#D2222B] px-2 py-0.5 text-[10px] font-semibold text-[#4a1b0d]">
                   Local POC report
                 </span>
               )}

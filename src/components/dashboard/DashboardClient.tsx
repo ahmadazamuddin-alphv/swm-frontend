@@ -78,8 +78,8 @@ function potholeToMapCase(pothole: PotholeCase): MapSelectableCase {
 function SeverityBadge({ severity }: { severity: PotholeCase["severity"] }) {
   const styles = {
     low: "border border-mist bg-snow text-graphite",
-    medium: "bg-amber-500 text-snow",
-    high: "bg-orange-600 text-snow",
+    medium: "bg-[#D2222B] text-snow",
+    high: "bg-[#a91824] text-snow",
     critical: "bg-red-600 text-snow",
   } as const;
 
@@ -110,7 +110,7 @@ function StreetRiskMeter({ percent }: { percent: number }) {
   return (
     <div className="h-1.5 overflow-hidden rounded-full bg-cloud">
       <div
-        className="h-full rounded-full bg-amber-500"
+        className="h-full rounded-full bg-[#D2222B]"
         style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}
       />
     </div>
@@ -302,7 +302,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
         <p className="mt-2 inline-flex items-center gap-2 text-xs text-fog">
           <span
             className={`size-1.5 rounded-[2px] ${
-              mode === "pothole" ? "bg-[#FDB915]" : "bg-[#D2222B]"
+              mode === "pothole" ? "bg-[#a91824]" : "bg-[#D2222B]"
             }`}
           />
           {mode === "dumping"
@@ -586,7 +586,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
                           type="button"
                           onClick={() => setSelectedId(pothole.id)}
                           className={`flex w-full gap-3 px-1 py-2.5 text-left transition ${
-                            active ? "bg-amber-50" : "hover:bg-paper"
+                            active ? "bg-[#fde7e8]" : "hover:bg-paper"
                           }`}
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -631,7 +631,7 @@ export function DashboardClient({ reports }: { reports: Report[] }) {
           href="/report"
           className="swm-report-fab fixed bottom-2 right-3 z-10 inline-flex items-center gap-2 rounded-[9px] bg-[#D2222B] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(210,34,43,0.3)] hover:-translate-y-1 hover:bg-[#a91824] sm:bottom-7 sm:left-1/2 sm:right-auto sm:z-30 sm:-translate-x-1/2 sm:px-6"
         >
-          <span className="grid size-6 place-items-center rounded-full bg-[#FDB915] text-[#4a1b0d] text-lg leading-none">
+          <span className="grid size-6 place-items-center rounded-full bg-white text-[#D2222B] text-lg leading-none">
             +
           </span>
           Report dumping

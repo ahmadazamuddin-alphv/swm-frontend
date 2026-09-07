@@ -44,7 +44,7 @@ export function PartyPanel({
       </div>
 
       {highlight && (
-        <span className="mt-4 inline-flex rounded-xl bg-[#FDB915] px-2.5 py-1 text-[11px] font-semibold text-[#4a1b0d]">
+        <span className="mt-4 inline-flex rounded-xl bg-[#D2222B] px-2.5 py-1 text-[11px] font-semibold text-[#4a1b0d]">
           Suggested for this location
         </span>
       )}

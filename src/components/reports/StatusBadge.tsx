@@ -5,7 +5,7 @@ const STYLES: Record<ReportStatus, string> = {
   new: "border border-[#2563eb] bg-[#2563eb] text-white",
   under_review: "border border-[#8b5cf6] bg-[#8b5cf6] text-white",
   assigned: "border border-[#06b6d4] bg-[#06b6d4] text-[#083344]",
-  in_progress: "border border-[#f59e0b] bg-[#f59e0b] text-[#451a03]",
+  in_progress: "border border-[#D2222B] bg-[#D2222B] text-white",
   solved: "border border-[#16a34a] bg-[#16a34a] text-white",
   false_report: "border border-[#ef4444] bg-[#ef4444] text-white",
 };

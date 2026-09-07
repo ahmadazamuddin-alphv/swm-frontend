@@ -82,7 +82,7 @@ export function ImpactGallery() {
                   aria-label={`Show gallery slide ${index + 1}`}
                   aria-current={index === active ? "true" : undefined}
                   onClick={() => setActive(index)}
-                  className={`h-2 rounded-full transition-all ${index === active ? "w-8 bg-[#D2222B]" : "w-2 bg-[#d4d4d8] hover:bg-[#FDB915]"}`}
+                  className={`h-2 rounded-full transition-all ${index === active ? "w-8 bg-[#D2222B]" : "w-2 bg-[#d4d4d8] hover:bg-[#D2222B]"}`}
                 />
               ))}
             </div>

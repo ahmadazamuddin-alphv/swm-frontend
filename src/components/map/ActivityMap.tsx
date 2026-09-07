@@ -256,7 +256,7 @@ function installSelangorDistrictLayers(map: Map) {
       },
       paint: {
         "text-color": "#4a1b0d",
-        "text-halo-color": "rgba(255,248,234,0.92)",
+        "text-halo-color": "rgba(255,255,255,0.92)",
         "text-halo-width": 1.5,
       },
     });
@@ -569,7 +569,7 @@ export function ActivityMap({
         {mode === "pothole" ? (
           <>
             <span className="inline-flex items-center gap-1.5">
-              <span className="inline-block size-2.5 rotate-45 bg-amber-500" />
+              <span className="inline-block size-2.5 rotate-45 bg-[#a91824]" />
               Pothole
             </span>
             <span className="inline-flex items-center gap-1.5">
@@ -588,7 +588,7 @@ export function ActivityMap({
               New
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-[#f59e0b]" />
+              <span className="size-2 rounded-full bg-[#D2222B]" />
               Active
             </span>
             <span className="inline-flex items-center gap-1.5">
