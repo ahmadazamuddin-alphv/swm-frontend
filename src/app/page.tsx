@@ -26,14 +26,14 @@ const journey = [
 
 export default function HomePage() {
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-[#f8f1e5]">
+    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-[#ffffff]">
       <SiteHeader />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0 bg-cover bg-[position:48%_center] opacity-45 sm:bg-center"
           style={{ backgroundImage: "url('/brand/selangor-mosque.jpg')" }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(248,241,229,0.93)_0%,rgba(248,241,229,0.72)_38%,#f8f1e5_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.93)_0%,rgba(255,255,255,0.72)_38%,#ffffff_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_10%,rgba(253,185,21,0.22),transparent_48%),radial-gradient(ellipse_at_90%_18%,rgba(210,34,43,0.14),transparent_48%)]" />
       </div>
 
@@ -55,25 +55,25 @@ export default function HomePage() {
             <div className="mt-10 flex flex-wrap gap-3 lg:mt-14">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-[14px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-[7px] border border-[#2c2e34] bg-obsidian px-5 py-3 text-sm font-medium text-snow shadow-[inset_0_0.5px_0_rgba(255,255,255,0.5),inset_0_9px_14px_-5px_rgba(117,123,133,0.4),0_4px_6px_rgba(0,0,0,0.14)] hover:-translate-y-0.5"
               >
                 Open 3D activity map
                 <ArrowRightIcon className="size-4" />
               </Link>
               <Link
                 href="/report"
-                className="inline-flex items-center rounded-[14px] border border-cloud bg-snow px-5 py-3 text-sm font-medium text-iron hover:border-mist hover:text-obsidian"
+                className="inline-flex items-center rounded-[7px] border border-cloud bg-snow px-5 py-3 text-sm font-medium text-iron hover:border-mist hover:text-obsidian"
               >
                 Make a report
               </Link>
             </div>
             <p className="mt-5 inline-flex items-center gap-2 text-xs text-fog">
-              <span className="size-1.5 rounded-[3px] bg-ember" />
+              <span className="size-1.5 rounded-[2px] bg-ember" />
               Illustrative citizen POC · no live service connection
             </p>
           </div>
 
-          <article className="overflow-hidden rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_18px_42px_rgba(64,35,10,0.10)] lg:col-span-5">
+          <article className="overflow-hidden rounded-[16px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_18px_42px_rgba(9,9,11,0.10)] lg:col-span-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/mock/reports/construction-1.jpg"
@@ -90,7 +90,7 @@ export default function HomePage() {
                   council.
                 </p>
               </div>
-              <span className="grid size-11 shrink-0 place-items-center rounded-[14px] bg-ember text-snow">
+              <span className="grid size-11 shrink-0 place-items-center rounded-[7px] bg-ember text-snow">
                 <MapPinIcon className="size-5" />
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function HomePage() {
 
         <ImpactGallery />
 
-        <section className="mt-8 grid overflow-hidden rounded-[32px] border border-[#ead9b8] bg-[#fff8ea]/95 shadow-[0_18px_42px_rgba(64,35,10,0.10)] lg:mt-12 lg:grid-cols-[1.35fr_0.65fr]">
+        <section className="mt-8 grid overflow-hidden rounded-[16px] border border-[#e4e4e7] bg-[#ffffff]/95 shadow-[0_18px_42px_rgba(9,9,11,0.10)] lg:mt-12 lg:grid-cols-[1.35fr_0.65fr]">
           <div className="bg-graphite p-7 text-snow sm:p-10">
             <h2 className="max-w-[15ch] text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
               From street evidence to accountable action.

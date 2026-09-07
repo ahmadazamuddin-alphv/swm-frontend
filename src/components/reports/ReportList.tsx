@@ -37,7 +37,7 @@ export function ReportList({
             <button
               type="button"
               onClick={() => onSelect?.(report.id)}
-              className={`flex w-full gap-3 rounded-[18px] pr-12 text-left ${
+              className={`flex w-full gap-3 rounded-[9px] pr-12 text-left ${
                 compact ? "px-2 py-2.5" : "px-2 py-4"
               } ${
                 active
@@ -49,7 +49,7 @@ export function ReportList({
               <img
                 src={report.imageUrl}
                 alt=""
-                className={`shrink-0 rounded-[14px] object-cover ${
+                className={`shrink-0 rounded-[7px] object-cover ${
                   compact ? "h-12 w-14" : "h-16 w-20"
                 }`}
               />

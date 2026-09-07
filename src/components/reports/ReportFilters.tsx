@@ -46,8 +46,8 @@ export function ReportFilters({
     ? "flex min-w-0 flex-col gap-1 text-[11px] font-medium text-fog"
     : "flex min-w-[9rem] flex-1 flex-col gap-1.5 text-xs font-medium text-fog";
   const selectClass = compact
-    ? "h-9 rounded-[14px] border border-[#ead9b8] bg-[#fff8ea]/95 px-3 text-xs font-normal text-[#3a281b] shadow-[0_8px_18px_rgba(64,35,10,0.08)] outline-none hover:border-[#D2222B] focus:border-[#D2222B]"
-    : "h-11 rounded-[14px] border border-[#ead9b8] bg-[#fff8ea] px-3 text-sm font-normal text-[#3a281b] outline-none hover:border-[#D2222B] focus:border-[#D2222B]";
+    ? "h-9 rounded-[7px] border border-[#e4e4e7] bg-[#ffffff]/95 px-3 text-xs font-normal text-[#3a281b] shadow-[0_8px_18px_rgba(9,9,11,0.08)] outline-none hover:border-[#D2222B] focus:border-[#D2222B]"
+    : "h-11 rounded-[7px] border border-[#e4e4e7] bg-[#ffffff] px-3 text-sm font-normal text-[#3a281b] outline-none hover:border-[#D2222B] focus:border-[#D2222B]";
   const selectedClass = "border-[#e9aaa4] bg-[#fdf0ee] text-[#a91824]";
 
   return (

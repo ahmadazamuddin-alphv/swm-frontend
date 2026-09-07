@@ -6,7 +6,7 @@ export default async function DashboardPage() {
   const reports = await fetchReports();
 
   return (
-    <div className="min-h-dvh overflow-hidden bg-[#f8f1e5]">
+    <div className="min-h-dvh overflow-hidden bg-[#ffffff]">
       <SiteHeader compact />
       <DashboardClient reports={reports} />
     </div>

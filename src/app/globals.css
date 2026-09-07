@@ -15,7 +15,7 @@
   --color-ember: #d2222b;
   --color-selangor-red: #d2222b;
   --color-selangor-yellow: #fdb915;
-  --color-selangor-cream: #fff8ea;
+  --color-selangor-cream: #ffffff;
 
   --background: var(--color-paper);
   --foreground: var(--color-graphite);
@@ -33,9 +33,9 @@
   --text-heading-lg: 56px;
   --text-display: 64px;
 
-  --radius-card: 36px;
-  --radius-control: 14px;
-  --radius-badge: 12px;
+  --radius-card: 18px;
+  --radius-control: 7px;
+  --radius-badge: 6px;
   --radius-pill: 10000px;
 }
 
@@ -60,7 +60,7 @@
   --color-ember: #d2222b;
   --color-selangor-red: #d2222b;
   --color-selangor-yellow: #fdb915;
-  --color-selangor-cream: #fff8ea;
+  --color-selangor-cream: #ffffff;
   --font-sans: var(--font-dm-sans);
 }
 
@@ -183,7 +183,7 @@ textarea:focus-visible {
 .maplibregl-ctrl-group {
   overflow: hidden;
   border: 1px solid var(--color-cloud);
-  border-radius: 14px !important;
+  border-radius: 7px !important;
   box-shadow: none !important;
 }
 
@@ -196,7 +196,7 @@ textarea:focus-visible {
 }
 
 .maplibregl-ctrl-attrib {
-  border-radius: 12px 0 0 0;
+  border-radius: 6px 0 0 0;
   background: rgba(255, 255, 255, 0.92) !important;
   color: var(--color-fog);
   font-size: 10px;
@@ -253,8 +253,8 @@ textarea:focus-visible {
 .swm-map-popup .maplibregl-popup-content {
   width: 250px;
   padding: 10px;
-  border: 1px solid #ead9b8;
-  border-radius: 20px;
+  border: 1px solid #e4e4e7;
+  border-radius: 10px;
   background: rgba(255, 248, 234, 0.98);
   box-shadow: 0 16px 32px rgba(64, 35, 10, 0.18);
   color: #3a281b;
@@ -269,7 +269,7 @@ textarea:focus-visible {
   width: 100%;
   height: 88px;
   margin-bottom: 10px;
-  border-radius: 13px;
+  border-radius: 7px;
   object-fit: cover;
 }
 

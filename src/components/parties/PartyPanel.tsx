@@ -10,7 +10,7 @@ export function PartyPanel({
 }) {
   if (!party) {
     return (
-      <div className="rounded-[28px] border border-dashed border-[#d8c49f] bg-[#fff8ea]/80 p-6 text-sm leading-relaxed text-[#6e5c4b] shadow-[0_14px_34px_rgba(64,35,10,0.06)]">
+      <div className="rounded-[14px] border border-dashed border-[#d4d4d8] bg-[#ffffff]/80 p-6 text-sm leading-relaxed text-[#6e5c4b] shadow-[0_14px_34px_rgba(9,9,11,0.06)]">
         Location is needed before the responsible department can be suggested.
       </div>
     );
@@ -18,8 +18,8 @@ export function PartyPanel({
 
   return (
     <section
-      className={`rounded-[28px] border bg-[#fff8ea]/95 p-6 shadow-[0_16px_38px_rgba(64,35,10,0.08)] ${
-        highlight ? "border-[#D2222B]" : "border-[#ead9b8]"
+      className={`rounded-[14px] border bg-[#ffffff]/95 p-6 shadow-[0_16px_38px_rgba(9,9,11,0.08)] ${
+        highlight ? "border-[#D2222B]" : "border-[#e4e4e7]"
       }`}
       aria-labelledby={`party-${party.id}`}
     >
@@ -33,7 +33,7 @@ export function PartyPanel({
             {party.department}
           </h2>
         </div>
-        <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-[14px] border border-[#ead9b8] bg-white p-1 shadow-[0_8px_16px_rgba(64,35,10,0.10)]">
+        <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-[7px] border border-[#e4e4e7] bg-white p-1 shadow-[0_8px_16px_rgba(9,9,11,0.10)]">
           {party.logoUrl ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img src={party.logoUrl} alt={`${party.department} logo`} className="max-h-full max-w-full object-contain" />
@@ -49,7 +49,7 @@ export function PartyPanel({
         </span>
       )}
 
-      <dl className="mt-5 divide-y divide-[#ead9b8] text-sm">
+      <dl className="mt-5 divide-y divide-[#e4e4e7] text-sm">
         <div className="grid grid-cols-[90px_1fr] gap-4 py-2.5">
           <dt className="text-fog">Contractor</dt>
           <dd className="text-right text-[#3a281b]">{party.contractor}</dd>
@@ -63,7 +63,7 @@ export function PartyPanel({
           <dd className="text-right">
             <a
               href={`tel:${party.phone}`}
-              className="text-[#3a281b] underline decoration-[#d8c49f] underline-offset-4 hover:text-[#a91824]"
+              className="text-[#3a281b] underline decoration-[#d4d4d8] underline-offset-4 hover:text-[#a91824]"
             >
               {party.phone}
             </a>
@@ -74,7 +74,7 @@ export function PartyPanel({
           <dd className="min-w-0 text-right">
             <a
               href={`mailto:${party.email}`}
-              className="break-all text-[#3a281b] underline decoration-[#d8c49f] underline-offset-4 hover:text-[#a91824]"
+              className="break-all text-[#3a281b] underline decoration-[#d4d4d8] underline-offset-4 hover:text-[#a91824]"
             >
               {party.email}
             </a>
@@ -86,7 +86,7 @@ export function PartyPanel({
             {party.zoneCoverage.map((zone) => (
               <span
                 key={zone}
-                className="rounded-xl border border-[#ead9b8] bg-white/60 px-2 py-1 text-xs text-[#3a281b]"
+                className="rounded-xl border border-[#e4e4e7] bg-white/60 px-2 py-1 text-xs text-[#3a281b]"
               >
                 {zone}
               </span>
