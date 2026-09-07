@@ -80,6 +80,16 @@ export const RESPONSIBLE_PARTIES: ResponsibleParty[] = [
     zoneCoverage: ["Subang Jaya", "USJ", "Puchong"],
     areaKey: "subang-jaya",
   },
+  {
+    id: "party-mphs",
+    department: "Jabatan Pengurusan Sisa Pepejal dan Pembersihan Awam MPHS",
+    contractor: "KDEB Waste Management",
+    contactPerson: "JPSPPA MPHS",
+    phone: "+60 3-6064 1050",
+    email: "jpsppa@mphs.gov.my",
+    zoneCoverage: ["Serendah", "Antara Gapi", "Hulu Selangor"],
+    areaKey: "serendah",
+  },
 ];
 
 export const MOCK_REPORTS: Report[] = [
@@ -296,7 +306,7 @@ export const MOCK_REPORTS: Report[] = [
     status: "in_progress",
     imageUrl: MOCK_IMAGES.wastePile,
     submittedAt: "2026-09-04T15:05:00+08:00",
-    responsiblePartyId: "party-mbsa",
+    responsiblePartyId: "party-mphs",
     area: "Serendah",
     postcode: "48200",
     taman: "Antara Gapi",
